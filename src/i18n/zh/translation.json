@@ -1,0 +1,590 @@
+{
+  "common": {
+    "delete": "删除",
+    "unrecorded": "未记",
+    "edit": "编辑",
+    "cancel": "取消",
+    "action": "操作",
+    "eidtSuccess": "编辑成功",
+    "deleteSuccess": "删除成功",
+    "addSuccess": "添加成功",
+    "camp": "校区",
+    "classroom": "教室",
+    "require": "必填项",
+    "status": "状态",
+    "updateSuccess": "更新成功",
+    "deleteTitle": "删除确认",
+    "createAt": "创建日期",
+    "deleteContent": "确认删除该数据，如果该数据有关联数据请先删除关联数据",
+    "normal": "正常",
+    "desc": "备注",
+    "startDate": "开始日期",
+    "endDate": "结束日期",
+    "clazz": "班级",
+    "dateRange": "日期区间",
+    "oneToOne": "一对一",
+    "classmate": "班课",
+    "selected": "已选",
+    "num": "项",
+    "cancelSeleced": "取消选择",
+    "student": "学员",
+    "lesson": "课程",
+    "lessonNum": "课时",
+    "detail": "详情",
+    "mode": "类型",
+    "discount": "优惠金额",
+    "otherCharging": "其他收费",
+    "teacher": "老师",
+    "recorded": "已记",
+    "upload": "上传",
+    "refresh": "刷新",
+    "uploadFail": "上传错误"
+  },
+  "navMenuItems": {
+    "login": {
+      "label": "登录"
+    },
+    "dashboard": {
+      "label": "导航页",
+      "description": "导航页"
+    },
+    "students": {
+      "label": "学员",
+      "description": "管理学校所有学生，查看学生详细信息、修改学生信息"
+    },
+    "teachers": {
+      "label": "老师",
+      "description": "管理学校所有老师, 查看老师详细信息、修改老师信息"
+    },
+    "courses": {
+      "label": "课程",
+      "description": "管理学校所有课程, 查看课程详细信息、修改课程信息"
+    },
+    "school": {
+      "label": "学校",
+      "description": "管理学校校区、教室"
+    },
+    "schoolAccount": {
+      "label": "学校账户",
+      "description": "创建，管理学校账户"
+    },
+    "attendance": {
+      "label": "课时",
+      "description": "计课时"
+    },
+    "orders": {
+      "label": "订单",
+      "description": "管理所有订单"
+    },
+    "schedule": {
+      "label": "老师课表",
+      "description": "老师课表"
+    },
+    "salary": {
+      "label": "教师工资",
+      "description": "计算教师工资"
+    },
+    "clazz": {
+      "label": "班级",
+      "description": "管理班级"
+    },
+    "askleave": {
+      "label": "请假",
+      "description": "管理学生请假",
+      "register": "报名"
+    },
+    "register": {
+      "label": "报名",
+      "description": "学生报名，续费"
+    },
+    "calendar": {
+      "label": "排课日历",
+      "description": "排课日历"
+    },
+    "teacherCalendar": {
+      "label": "老师排课日历",
+      "description": "老师排课日历"
+    },
+    "inv": {
+      "label": "invoice"
+    }
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    }
+  },
+  "layout": {
+    "header": {
+      "logout": "退出登录"
+    }
+  },
+  "login": {
+    "wellcome": "欢迎回来",
+    "loginWords": "登录 Flysky 账户",
+    "username": "用户名",
+    "password": "密码",
+    "form": {
+      "password": {
+        "errorMessage": "请输入您的密码!",
+        "label": "密码"
+      },
+      "username": {
+        "errorMessage": "请输入您的邮箱!",
+        "label": "邮箱"
+      }
+    }
+  },
+  "schoolAccount": {
+    "table": {
+      "name": "学校账户",
+      "columns": {
+        "schoolName": "学校名称",
+        "name": "校长",
+        "email": "Email",
+        "capacity": "容量",
+        "status": "状态",
+        "address": "地址",
+        "creationDate": "创建日期",
+        "action": "操作"
+      },
+      "action": {
+        "new": "添加",
+        "title": "添加新的学校账户",
+        "submit": "创建"
+      }
+    },
+    "addForm": {
+      "title": "添加新的学校账户",
+      "submit": "创建",
+      "placeholder": {
+        "schoolName": "请输入名称",
+        "name": "请输入校长名称",
+        "password": "请输入密码",
+        "email": "请输入邮箱",
+        "address": "请输入地址",
+        "repeatPassword": "请再次输入密码"
+      },
+      "tooltip": {
+        "schoolName": "最长为 50 位",
+        "name": "最长为 20 位",
+        "email": "Email做为用户名登录用",
+        "address": "显示在Invoice上"
+      },
+      "label": {
+        "schoolName": "学校名称",
+        "name": "校长",
+        "password": "密码",
+        "email": "Email",
+        "address": "地址",
+        "repeatPassword": "重复密码",
+        "logo": "学校LOGO"
+      },
+      "errorMessage": {
+        "schoolName": "学校名称不能为空",
+        "name": "校长不能为空",
+        "password": "密码不能为空",
+        "email": {
+          "require": "Email不能为空",
+          "format": "Email格式不正确"
+        },
+        "address": "地址不能为空",
+        "repeatPassword": "两次密码不一致"
+      }
+    }
+  },
+  "school": {
+    "basicInfo": {
+      "name": "学校名称",
+      "principal": "校长",
+      "email": "Email",
+      "capacity": "容量",
+      "address": "地址"
+    },
+    "tab": {
+      "camp": "校区",
+      "classroom": "教室"
+    },
+    "camp": {
+      "table": {
+        "name": "校区管理",
+        "columns": {
+          "campName": "校区名称",
+          "address": "地址",
+          "desc": "校区描述",
+          "creationDate": "创建日期",
+          "action": "操作"
+        },
+        "action": {
+          "new": "添加校区",
+          "title": "添加新的校区"
+        },
+        "close": "关闭"
+      },
+      "addForm": {
+        "title": "添加新的校区",
+        "name": {
+          "label": "校区名称",
+          "placeholder": "请输入名称",
+          "require": "学校名称不能为空",
+          "tooltip": "最长为 50 位"
+        },
+        "address": {
+          "label": "校区地址",
+          "placeholder": "请输入地址",
+          "require": "校长不能为空",
+          "tooltip": "最长为 100 位"
+        },
+        "logo": {
+          "label": "校区LOGO",
+          "placeholder": "Placeholder for logo",
+          "require": "Logo不能为空",
+          "tooltip": "Tooltip for logo"
+        },
+        "desc": {
+          "label": "说明",
+          "placeholder": "请再次输入密码",
+          "require": "说明不能为空",
+          "tooltip": "Tooltip for description"
+        }
+      }
+    },
+    "classroom": {
+      "table": {
+        "name": "教室管理",
+        "columns": {
+          "name": "教室名",
+          "camp": "校区",
+          "desc": "描述",
+          "creationDate": "创建日期",
+          "action": "操作"
+        },
+        "action": {
+          "new": "添加教室",
+          "title": "添加新的教室"
+        }
+      },
+      "addForm": {
+        "title": "添加新的教室",
+        "submit": "创建",
+        "name": {
+          "label": "教室名称",
+          "placeholder": "请输入名称",
+          "require": "教室名不能为空",
+          "tooltip": "最长为 50 位"
+        },
+        "camp": {
+          "label": "所属校区",
+          "placeholder": "请选择校区",
+          "require": "所属校区不能为空"
+        },
+        "email": {
+          "label": "Email",
+          "require": "Email不能为空"
+        },
+        "info": {
+          "label": "说明",
+          "require": "说明不能为空"
+        }
+      }
+    }
+  },
+  "clazz": {
+    "table": {
+      "name": "班级名称",
+      "classroom": "教室",
+      "camp": "校区",
+      "startEnd": "上课时间",
+      "mode": "课程模式",
+      "startDate": "开始日期",
+      "oneToOne": "一对一",
+      "classmate": "班课",
+      "max": "最大人数",
+      "min": "最小人数",
+      "title": "班级管理",
+      "action": {
+        "new": "添加课程"
+      }
+    },
+    "character": "班"
+  },
+  "askleave": {
+    "table": {
+      "title": "请假申请",
+      "clazz": "班级",
+      "name": "学员",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "status": {
+        "approve": "批准",
+        "reject": "未批准"
+      },
+      "desc": "操作",
+      "createAt": "创建日期",
+      "approve": "批准",
+      "reject": "未批准"
+    },
+    "addForm": {
+      "title": "创建请假条",
+      "student": {
+        "label": "学生"
+      },
+      "clazz": {}
+    }
+  },
+  "dailyschedule": {
+    "table": {
+      "columns": {
+        "classname": "班级",
+        "classDate": "上课日期",
+        "classTime": "上课时间",
+        "mode": "上课模式",
+        "classroom": "教室",
+        "camp": "校区",
+        "point": "课时"
+      },
+      "action": {
+        "deleteBtn": "删除选中排课",
+        "deleteConfirm": "确定删除选中排课吗?"
+      }
+    },
+    "popconfirm": {
+      "text1": "还剩",
+      "text2": "课时"
+    }
+  },
+  "lesson": {
+    "table": {
+      "title": "课程管理",
+      "name": "课程名",
+      "mode": "授课模式",
+      "oneToOne": "一对一",
+      "classmate": "班课",
+      "camp": "校区",
+      "status": {
+        "label": "状态",
+        "pause": "暂停",
+        "normal": "正常"
+      },
+      "action": "操作"
+    },
+    "tab": {
+      "clazz": "开课班级",
+      "order": "报名记录"
+    }
+  },
+  "teacher": {
+    "name": "姓名",
+    "phone": "电话",
+    "gender": "性别",
+    "male": "男",
+    "female": "女",
+    "email": "Email",
+    "camp": "服务校区",
+    "status": {
+      "label": "状态",
+      "normal": "正常",
+      "leave": "离职"
+    },
+    "creationDate": "账号创建时间",
+    "table": {
+      "name": "教师管理",
+      "allCamp": "全部校区",
+      "action": {
+        "new": "添加教师"
+      }
+    },
+    "addForm": {
+      "name": {
+        "label": "姓名",
+        "placeholder": "请输入姓名",
+        "require": "姓名不能为空",
+        "tooltip": "最长为 20 位"
+      },
+      "phone": {
+        "label": "电话",
+        "placeholder": "请输入电话",
+        "require": "电话不能为空"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "请输入Email",
+        "require": "Email不能为空",
+        "format": "Email格式不正确"
+      },
+      "gender": {
+        "label": "性别",
+        "male": "男",
+        "female": "女"
+      },
+      "rate": {
+        "label": "单位工资",
+        "notice": "请输入单位工资"
+      },
+      "isAllCamp": {
+        "label": "教学范围",
+        "allCamp": "全部校区",
+        "camp": "部分校区",
+        "require": "请选择教学范围"
+      },
+      "desc": {
+        "label": "备注"
+      },
+      "password": {
+        "label": "密码",
+        "placeholder": "请输入密码",
+        "require": "密码不能为空"
+      },
+      "repeatPassword": {
+        "label": "重复密码",
+        "placeholder": "请再次输入密码",
+        "require": "重复密码不能为空",
+        "repeat": "两次密码不一致"
+      },
+      "isEditPass": {
+        "label": "修改密码"
+      }
+    },
+    "people": "人员管理",
+    "salary": "工资管理",
+    "detail": {
+      "title": "教师详情",
+      "basicInfo": {
+        "name": "姓名",
+        "phone": "电话",
+        "email": "Email",
+        "camp": "服务校区",
+        "gender": "性别"
+      },
+      "tab": {
+        "class": "所在班级",
+        "record": "上课记录",
+        "salary": "工资记录",
+        "clazz": "所在班级",
+        "lesson": "所教课程"
+      }
+    }
+  },
+  "salary": {
+    "table": {
+      "name": "老师名称",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "point": "课时",
+      "rate": "单位工资",
+      "status": {
+        "label": "状态",
+        "normal": "已发",
+        "not": "未发"
+      },
+      "amount": "总数",
+      "desc": "说明",
+      "createAt": "创建日期",
+      "option": "操作",
+      "action": {
+        "new": "新的结算",
+        "delete": "删除选中结算"
+      },
+      "title": "工资管理"
+    },
+    "addForm": {
+      "title": "新的结算",
+      "isAllUser": {
+        "all": "所有老师",
+        "select": "部分老师",
+        "label": "老师"
+      },
+      "userIds": {
+        "label": "选择老师"
+      }
+    }
+  },
+  "exception": {
+    "TIMEOUT": "系统繁忙",
+    "SUCCESS": "成功",
+    "PARAM_ERROR": "请求参数错误",
+    "NOT_FOUND": "查找的资源不存在",
+    "UN_AUTHORIZED": "用户未登录",
+    "AUTH_FORBIDDEN": "用户没有权限",
+    "PWD_ERROR": "账号或者密码错误",
+    "EMAIL_ISUSED": "EMAIL占用"
+  },
+  "attandance": {
+    "tab": {
+      "dailyschedule": "记课时",
+      "askleave": "请假"
+    },
+    "dailyschedule": {
+      "table": {
+        "title": "记课时"
+      }
+    },
+    "title": "课时处理"
+  },
+  "order": {
+    "table": {
+      "columns": {
+        "finalPrice": "金额",
+        "leftNum": "剩余",
+        "success": "已付",
+        "warning": "正常",
+        "error": "作废"
+      },
+      "search": {
+        "searchStudent": "搜索学生"
+      },
+      "title": "订单列表"
+    },
+    "detail": {
+      "title": "订单详情",
+      "dailyschedule": {
+        "title": "上课记录"
+      },
+      "return": {
+        "title": "退费记录"
+      },
+      "action": {
+        "disabled": "作废",
+        "return": "退费"
+      },
+      "basicInfo": {
+        "account": "学员账户",
+        "pay": "应付总金额",
+        "price": "套餐单价",
+        "orderNum": "订单数量"
+      },
+      "returnForm": {
+        "error": {
+          "points": "退课时不能大于剩余总课时",
+          "price": "退费金额不能大于订单金额"
+        },
+        "finishLesson": {
+          "label": "结业课程",
+          "tooltip": "将暂停对应的一对一班级，班级中学员状态设置为结业"
+        },
+        "returnPoints2": {
+          "label": "退天数(按期计费)"
+        },
+        "returnPoints1": {
+          "label": "退课时(按课时计费)"
+        },
+        "returnPrice": {
+          "label": "退款金额"
+        },
+        "returnDate": {
+          "label": "退款日期"
+        }
+      }
+    }
+  },
+  "upload": {
+    "clickUpload": "点击上传"
+  },
+  "result": {
+    "warning": {
+      "title": "应用发生了一些异常错误，请点击刷新按钮重试"
+    }
+  }
+}

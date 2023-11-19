@@ -1,0 +1,302 @@
+{
+  "navMenuItems": {
+    "index": {
+      "label": "Navigation",
+      "description": "Home page"
+    },
+    "students": {
+      "label": "Students",
+      "description": "Manage students details and modify student"
+    },
+    "teachers": {
+      "label": "Teachers",
+      "description": "Manage teachersdetails and modify teacher"
+    },
+    "courses": {
+      "label": "Courses",
+      "description": "Manage courses details and modify course"
+    },
+    "school": {
+      "label": "School",
+      "description": "Manage school districts and classrooms"
+    },
+    "schoolAccount": {
+      "label": "School Account",
+      "description": "Create and manage school account"
+    },
+    "attendance": {
+      "label": "Attendance",
+      "description": "Calculate course hours and leave"
+    },
+    "orders": {
+      "label": "Orders",
+      "description": "Manage all orders and modify orders"
+    },
+    "schedule": {
+      "label": "Schedule",
+      "description": "Schedule calendar and teacher schedule"
+    },
+    "salary": {
+      "label": "Teacher Salary",
+      "description": "Calculate teacher salary"
+    }
+  },
+  "layout": {
+    "header": {
+      "logout": "Logout"
+    }
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Good Moring",
+      "afternoon": "Good Afternoon",
+      "evening": "Good Evening"
+    }
+  },
+  "login": {
+    "wellcome": "Welcome Back",
+    "loginWords": "Log into Flysky account",
+    "username": "Username",
+    "password": "Password",
+    "form": {
+      "password": {
+        "errorMessage": "Please input your password!",
+        "label": "Password"
+      },
+      "username": {
+        "errorMessage": "Please input your email!",
+        "label": "Email"
+      }
+    }
+  },
+  "common": {
+    "delete": "Delete",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "action": "Action",
+    "eidtSuccess": "Edit Successful",
+    "deleteSuccess": "Delete Successful",
+    "addSuccess": "Add Successful",
+    "require": "Required"
+  },
+  "school": {
+    "name": "School Name",
+    "principal": "Principal",
+    "email": "Email",
+    "capacity": "Capacity",
+    "address": "Address",
+    "creationDate": "Account Creation Date",
+    "tab": {
+      "camp": "Campus",
+      "classroom": "Classroom"
+    },
+    "campus": {
+      "table": {
+        "name": "Campus Management",
+        "columns": {
+          "campName": "Campus Name",
+          "address": "Address",
+          "desc": "Campus Description",
+          "creationDate": "Creation Date",
+          "action": "Action"
+        },
+        "action": {
+          "new": "Add Campus",
+          "title": "Add New Campus"
+        }
+      },
+      "addForm": {
+        "title": "Add New Campus",
+        "placeholder": {
+          "campName": "Enter Name",
+          "address": "Enter Address",
+          "desc": "Enter Description"
+        },
+        "tooltip": {
+          "campName": "Up to 50 characters",
+          "address": "Up to 100 characters"
+        },
+        "label": {
+          "campName": "Campus Name",
+          "address": "Campus Address",
+          "logo": "Campus Logo",
+          "desc": "Description"
+        },
+        "errorMessage": {
+          "campName": "School Name cannot be empty",
+          "address": "Principal cannot be empty"
+        }
+      }
+    },
+    "classroom": {
+      "table": {
+        "name": "Classroom Management",
+        "columns": {
+          "name": "Classroom Name",
+          "camp": "Campus",
+          "desc": "Description",
+          "creationDate": "Creation Date",
+          "action": "Action"
+        },
+        "action": {
+          "new": "Add Classroom",
+          "title": "Add New Classroom"
+        }
+      },
+      "addForm": {
+        "title": "Add New Classroom",
+        "submit": "Create",
+        "placeholder": {
+          "name": "Enter Name",
+          "camp": "Select Campus"
+        },
+        "tooltip": {
+          "name": "Up to 50 characters"
+        },
+        "label": {
+          "name": "Classroom Name",
+          "camp": "Belongs to Campus",
+          "email": "Email",
+          "info": "Description"
+        },
+        "errorMessage": {
+          "name": "Classroom Name cannot be empty",
+          "camp": "Belongs to Campus cannot be empty"
+        }
+      }
+    }
+  },
+  "schoolAccount": {
+    "table": {
+      "name": "School Account Table",
+      "columns": {
+        "schoolName": "School Name",
+        "email": "Email",
+        "name": "Principal",
+        "capacity": "Capacity",
+        "address": "Address",
+        "creationDate": "Creation Date",
+        "action": "Action"
+      },
+      "action": {
+        "new": "New"
+      }
+    },
+    "addForm": {
+      "title": "New School Account",
+      "submit": "create",
+      "placeholder": {
+        "schoolName": "Please enter the name",
+        "name": "Please enter the principal's name",
+        "password": "Please enter the password",
+        "email": "Please enter the email",
+        "address": "Please enter the address",
+        "repeatPassword": "Please enter the password again"
+      },
+      "tooltip": {
+        "schoolName": "Maximum 50 characters",
+        "name": "Maximum 20 characters",
+        "email": "Used as username for login",
+        "address": "Displayed on the invoice"
+      },
+      "label": {
+        "schoolName": "School Name",
+        "name": "Name",
+        "password": "Password",
+        "email": "Email",
+        "address": "Address",
+        "repeatPassword": "Repeat Password"
+      },
+      "errorMessage": {
+        "schoolName": "School name cannot be empty",
+        "name": "Principal name cannot be empty",
+        "password": "Password cannot be empty",
+        "email": {
+          "require": "Email cannot be empty",
+          "format": "Email format is incorrect"
+        },
+        "address": "Address cannot be empty",
+        "repeatPassword": "Passwords do not match"
+      }
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "course": "Course",
+    "student": "Student",
+    "teacher": "Teacher",
+    "school": "School",
+    "schoolAccount": "School Account",
+    "attendance": "Attendance",
+    "order": "Order",
+    "schedule": "Schedule",
+    "salary": "Salary",
+    "login": "Login"
+  },
+  "exception": {
+    "TIMEOUT": "System busy",
+    "SUCCESS": "Success",
+    "PARAM_ERROR": "Request parameter error",
+    "NOT_FOUND": "Resource not found",
+    "UN_AUTHORIZED": "User not logged in",
+    "AUTH_FORBIDDEN": "User has no permission",
+    "PWD_ERROR": "Account or password error",
+    "EMAIL_ISUSED": "Email in use"
+  },
+  "lesson": {
+    "table": {
+      "name": "Course Name",
+      "classroom": "Classroom",
+      "camp": "Campus",
+      "startEnd": "Class Time",
+      "mode": "Course Mode",
+      "startDate": "Start Date",
+      "oneToOne": "One-on-One",
+      "classmate": "Group Class",
+      "max": "Maximum Students",
+      "min": "Minimum Students"
+    }
+  },
+  "dailyschedule": {
+    "table": {
+      "classname": "Class Name",
+      "classDate": "Class Date",
+      "classTime": "Class Time",
+      "mode": "Class Mode",
+      "classroom": "Classroom",
+      "camp": "Campus",
+      "point": "Lesson Hours"
+    }
+  },
+  "teacher": {
+    "name": "Name",
+    "phone": "Phone",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "email": "Email",
+    "camp": "Serving Campus",
+    "creationDate": "Account Creation Date",
+    "table": {
+      "name": "Teacher Management",
+      "allCamp": "All Campuses"
+    },
+    "people": "Personnel Management",
+    "salary": "Salary Management",
+    "detail": {
+      "title": "Teacher Details",
+      "basicInfo": {
+        "name": "Name",
+        "phone": "Phone",
+        "email": "Email",
+        "camp": "Serving Campus",
+        "gender": "Gender"
+      },
+      "tab": {
+        "class": "Assigned Classes",
+        "record": "Class Records",
+        "salary": "Salary Management"
+      }
+    }
+  }
+}
