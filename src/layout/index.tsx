@@ -5,6 +5,7 @@ import { useAtom } from "jotai";
 import { LocaleAtom } from "@/Atoms";
 import Navigation from "./components/Navigation";
 import { Separator } from "@/components/Seperator";
+import PageWrapper from "@/components/PageWraper";
 export const LocaleList: Array<{ label: string; value: LocalType }> = [
   { value: "en", label: "English" },
   { value: "zh", label: "中文" },
@@ -20,8 +21,10 @@ const AppLayout = () => {
           <Navigation />
         </nav>
         <Separator orientation="vertical" className="h-screen" />
-        <main>
-          <Outlet />
+        <main className="flex-1">
+          <PageWrapper>
+            <Outlet />
+          </PageWrapper>
         </main>
       </div>
     </ErrorBoundary>

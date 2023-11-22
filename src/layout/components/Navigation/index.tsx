@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/Button";
 import { NewTransaction } from "@/components/NewTransaction";
 import { FC, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 export interface NavigationProps {}
 const Navigation: FC<NavigationProps> = () => {
   const [open, setOpen] = useState(false);
@@ -29,18 +30,22 @@ const Navigation: FC<NavigationProps> = () => {
     {
       name: "Dashboard",
       icon: <MaterialSymbolsDashboard />,
+      href: "/",
     },
     {
       name: "Transactions",
       icon: <UilTransaction />,
+      href: "/transactions",
     },
     {
       name: "Accounts",
       icon: <MaterialSymbolsCreditCard />,
+      href: "/accounts",
     },
     {
       name: "Debets",
       icon: <PhPlusMinusFill />,
+      href: "/debets",
     },
   ];
   return (
@@ -85,16 +90,18 @@ const Navigation: FC<NavigationProps> = () => {
         </div>
         <div className=" flex flex-col  gap-3">
           {menuItems.map((item) => (
-            <Button
-              key={item.name}
-              className="h-8 px-2 py-1 justify-start "
-              variant={"ghost"}
-            >
-              <div className="flex items-center  gap-2">
-                <div className="text-base">{item.icon}</div>
-                <div className="leading-6	">{item.name}</div>
-              </div>
-            </Button>
+            <Link to={item.href} className="w-full">
+              <Button
+                key={item.name}
+                className="h-8 px-2 py-1 justify-start w-full "
+                variant={"ghost"}
+              >
+                <div className="flex items-center  gap-2">
+                  <div className="text-base">{item.icon}</div>
+                  <div className="leading-6	">{item.name}</div>
+                </div>
+              </Button>
+            </Link>
           ))}
         </div>
       </div>
