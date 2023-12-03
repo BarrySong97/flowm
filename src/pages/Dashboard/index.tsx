@@ -1,18 +1,15 @@
 import { FC } from "react";
+import { Card, Tabs, Tab } from "@nextui-org/react";
 import {
-  Card,
   Metric,
   Text,
   Flex,
   BadgeDelta,
   Grid,
-  Title,
-  BarChart,
   TabGroup,
   TabPanels,
   TabPanel,
   TabList,
-  Tab,
 } from "@tremor/react";
 import LineCharts from "./components/line-chart";
 import DashDonutChart from "./components/bar-chart";
@@ -56,47 +53,12 @@ const Dashboard: FC<DashboardProps> = () => {
       deltaType: "moderateDecrease",
     },
   ];
-  const data = [
-    {
-      Month: "Jan 21",
-      Sales: 2890,
-    },
-    {
-      Month: "Feb 21",
-      Sales: 1890,
-    },
-    // ...
-    {
-      Month: "Jan 22",
-      Sales: 3890,
-    },
-    {
-      Month: "Jan 22",
-      Sales: 3890,
-    },
-    {
-      Month: "Jan 22",
-      Sales: 3890,
-    },
-    {
-      Month: "Jan 22",
-      Sales: 3890,
-    },
-    {
-      Month: "Jan 22",
-      Sales: 3890,
-    },
-    {
-      Month: "Jan 22",
-      Sales: 3890,
-    },
-  ];
 
   return (
     <>
-      <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
+      <Grid numItemsSm={2} numItemsLg={4} className="gap-6 mb-4">
         {categories.map((item) => (
-          <Card key={item.title}>
+          <Card key={item.title} className="p-4">
             <Text>{item.title}</Text>
             <Flex
               justifyContent="start"
@@ -115,26 +77,20 @@ const Dashboard: FC<DashboardProps> = () => {
           </Card>
         ))}
       </Grid>
-      <TabGroup>
-        <TabList variant="solid" className="mt-8">
-          <Tab>消费</Tab>
-          <Tab>收入</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <div className="mt-4 grid grid-cols-4 gap-6">
-              <LineCharts />
-              <DashDonutChart />
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <div className="mt-4 grid grid-cols-4 gap-6">
-              <LineCharts />
-              <DashDonutChart />
-            </div>
-          </TabPanel>
-        </TabPanels>
-      </TabGroup>
+      <Tabs aria-label="Dynamic tabs">
+        <Tab title="消费">
+          <div className="grid grid-cols-4 gap-6">
+            <LineCharts />
+            <DashDonutChart />
+          </div>
+        </Tab>
+        <Tab title="收入">
+          <div className="grid grid-cols-4 gap-6">
+            <LineCharts />
+            <DashDonutChart />
+          </div>
+        </Tab>
+      </Tabs>
     </>
   );
 };

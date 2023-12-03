@@ -1,5 +1,5 @@
-import { Card, DonutChart, Title } from "@tremor/react";
-
+import { DonutChart, Title } from "@tremor/react";
+import { Card } from "@nextui-org/react";
 const cities = [
   {
     name: "New York",
@@ -33,7 +33,7 @@ const valueFormatter = (number) =>
   `$ ${new Intl.NumberFormat("us").format(number).toString()}`;
 const DashDonutChart = () => {
   return (
-    <Card>
+    <Card className="p-4">
       <Title>十二月消费分类</Title>
       <DonutChart
         className="mt-6 "

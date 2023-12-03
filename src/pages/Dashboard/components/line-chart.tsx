@@ -1,15 +1,5 @@
-import {
-  AreaChart,
-  Card,
-  Metric,
-  TabList,
-  Tab,
-  TabGroup,
-  TabPanels,
-  TabPanel,
-  Title,
-} from "@tremor/react";
-
+import { AreaChart, Title } from "@tremor/react";
+import { Card } from "@nextui-org/react";
 const data = [
   {
     Month: "Jan 22",
@@ -43,7 +33,7 @@ function sumArray(array, metric) {
 
 export default function LineCharts() {
   return (
-    <Card className="col-span-3">
+    <Card className="p-4 col-span-3">
       <Title>12月消费趋势</Title>
       <AreaChart
         className="h-40 mt-6 "

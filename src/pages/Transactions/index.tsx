@@ -1,17 +1,11 @@
 import {
   Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
   TableRow,
   TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableBody,
-  Badge,
-  Icon,
-} from "@tremor/react";
-import {
-  ArrowRightIcon,
-  ChevronDoubleRightIcon,
-} from "@heroicons/react/outline";
+} from "@nextui-org/react";
 
 const salesPeople = [
   {
@@ -88,34 +82,37 @@ const salesPeople = [
 
 export default function Transactions() {
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableHeaderCell>流向</TableHeaderCell>
-          <TableHeaderCell>简述</TableHeaderCell>
-          <TableHeaderCell>金额</TableHeaderCell>
-          <TableHeaderCell>日期</TableHeaderCell>
-          <TableHeaderCell>备注</TableHeaderCell>
-        </TableRow>
-      </TableHead>
+    <Table
+      color={"primary"}
+      selectionMode="multiple"
+      aria-label="Example static collection table"
+    >
+      <TableHeader>
+        <TableColumn>NAME</TableColumn>
+        <TableColumn>ROLE</TableColumn>
+        <TableColumn>STATUS</TableColumn>
+      </TableHeader>
       <TableBody>
-        {salesPeople.map((item) => (
-          <TableRow key={item.name} className="hover:bg-accent cursor-pointer">
-            <TableCell className="p-2 flex gap-1">
-              <Badge size={"xs"} className="!rounded-sm">
-                微信
-              </Badge>
-              <Icon size="xs" color="gray" icon={ChevronDoubleRightIcon} />
-              <Badge size={"xs"} className="!rounded-sm">
-                餐饮
-              </Badge>
-            </TableCell>
-            <TableCell className="p-2">{item.name}</TableCell>
-            <TableCell className="p-2">${item.leads}</TableCell>
-            <TableCell className="p-2">2023-12-02</TableCell>
-            <TableCell className="p-2">-</TableCell>
-          </TableRow>
-        ))}
+        <TableRow key="1">
+          <TableCell>Tony Reichert</TableCell>
+          <TableCell>CEO</TableCell>
+          <TableCell>Active</TableCell>
+        </TableRow>
+        <TableRow key="2">
+          <TableCell>Zoey Lang</TableCell>
+          <TableCell>Technical Lead</TableCell>
+          <TableCell>Paused</TableCell>
+        </TableRow>
+        <TableRow key="3">
+          <TableCell>Jane Fisher</TableCell>
+          <TableCell>Senior Developer</TableCell>
+          <TableCell>Active</TableCell>
+        </TableRow>
+        <TableRow key="4">
+          <TableCell>William Howard</TableCell>
+          <TableCell>Community Manager</TableCell>
+          <TableCell>Vacation</TableCell>
+        </TableRow>
       </TableBody>
     </Table>
   );

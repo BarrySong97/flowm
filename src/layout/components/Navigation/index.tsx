@@ -1,17 +1,13 @@
 import {
-  IcRoundSearch,
   IonHelp,
   MaterialSymbolsCreditCard,
   MaterialSymbolsDashboard,
-  MaterialSymbolsEditSquareOutlineRounded,
   PhPlusMinusFill,
   UilTransaction,
 } from "@/assets/icons";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
-import { Button } from "@/components/Button";
-import { NewTransaction } from "@/components/NewTransaction";
 import { FC, useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Divider, Listbox, Avatar, ListboxItem } from "@nextui-org/react";
 export interface NavigationProps {}
 const Navigation: FC<NavigationProps> = () => {
   const [open, setOpen] = useState(false);
@@ -27,8 +23,6 @@ const Navigation: FC<NavigationProps> = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const location = useLocation();
-  const { pathname } = location;
   const menuItems = [
     {
       name: "首页",
@@ -51,67 +45,61 @@ const Navigation: FC<NavigationProps> = () => {
       href: "/debets",
     },
   ];
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
-    <div className="h-screen px-3 py-4 w-[220px] flex flex-col justify-between">
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between ">
-          <div className="flex px-2 py-1 flex-1 gap-2 items-center">
-            <Avatar className="rounded-md w-[18px]   h-[18px] ">
-              <AvatarFallback className=" bg-sky-500 text-white rounded-sm text-[0.6875rem]">
-                BA
-              </AvatarFallback>
-            </Avatar>
-
-            <span className="text-sm">Barry Song</span>
+    <div className="h-screen  py-4 w-[220px] flex flex-col justify-between">
+      <div>
+        <div className="px-3 pt-2 flex gap-3 ">
+          <Avatar
+            src="https://i.pravatar.cc/150?u=a04258114e29026302d"
+            size="md"
+          />
+          <div className="flex flex-col justify-between">
+            <div className="text-sm font-bold">Barry Song</div>
+            <div className="text-xs text-slate-500">已经记账300天</div>
           </div>
-          <Button variant={"ghost"} className="h-8 px-2 py-1 justify-start">
-            <Avatar className=" w-[18px]   h-[18px] ">
-              <AvatarImage src="https://github.com/shadcn.png" />
-            </Avatar>
-          </Button>
         </div>
-        <div className="flex justify-between gap-2">
-          <Button
-            className="h-8 gap-2 px-2 py-1 flex-1 justify-between"
-            variant={"outline"}
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(true);
-            }}
-          >
-            <div className="flex items-center leading-6 gap-2">
-              <MaterialSymbolsEditSquareOutlineRounded className="text-base" />
-              New
-            </div>
-            <div>
-              <NewTransaction open={open} onOpenChange={setOpen} />
-            </div>
-          </Button>
-          <Button className="h-8 px-2 py-1" variant={"outline"}>
-            <IcRoundSearch />
-          </Button>
+        <div className="px-3">
+          <Divider className="mt-6 mb-4 " />
         </div>
+
         <div className=" flex flex-col  gap-3">
-          {menuItems.map((item) => (
-            <Link to={item.href} className="w-full">
-              <Button
-                key={item.name}
-                className={`${
-                  pathname === item.href ? "bg-accent" : ""
-                } h-8 px-2 py-1 justify-start w-full`}
-                variant={"ghost"}
+          <Listbox
+            aria-label="User Menu"
+            variant="flat"
+            color="primary"
+            disallowEmptySelection
+            autoFocus
+            hideSelectedIcon
+            defaultSelectedKeys={["/"]}
+            selectedKeys={[pathname]}
+            selectionMode="single"
+          >
+            {menuItems.map((item) => (
+              <ListboxItem
+                key={item.href}
+                onClick={() => {
+                  navigate(item.href);
+                }}
+                startContent={
+                  <div
+                    className={
+                      "flex items-center rounded-small justify-center w-7 h-7"
+                    }
+                  >
+                    {item.icon}
+                  </div>
+                }
               >
-                <div className="flex items-center  gap-2">
-                  <div className="text-base">{item.icon}</div>
-                  <div className="leading-6	">{item.name}</div>
-                </div>
-              </Button>
-            </Link>
-          ))}
+                {item.name}
+              </ListboxItem>
+            ))}
+          </Listbox>
         </div>
       </div>
 
-      <div className="flex justify-start">
+      {/* <div className="flex justify-start">
         <Button
           className="rounded-full h-8 w-8 p-2"
           size={"sm"}
@@ -119,7 +107,7 @@ const Navigation: FC<NavigationProps> = () => {
         >
           <IonHelp className="text-sm " />
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };
