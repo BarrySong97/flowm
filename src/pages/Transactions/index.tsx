@@ -1,13 +1,17 @@
 import {
-  Card,
   Table,
   TableRow,
   TableCell,
   TableHead,
   TableHeaderCell,
   TableBody,
-  BadgeDelta,
+  Badge,
+  Icon,
 } from "@tremor/react";
+import {
+  ArrowRightIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/outline";
 
 const salesPeople = [
   {
@@ -87,29 +91,29 @@ export default function Transactions() {
     <Table>
       <TableHead>
         <TableRow>
-          <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell className="text-right">Leads</TableHeaderCell>
-          <TableHeaderCell className="text-right">Sales ($)</TableHeaderCell>
-          <TableHeaderCell className="text-right">Quota ($)</TableHeaderCell>
-          <TableHeaderCell className="text-right">Variance</TableHeaderCell>
-          <TableHeaderCell className="text-right">Region</TableHeaderCell>
-          <TableHeaderCell className="text-right">Status</TableHeaderCell>
+          <TableHeaderCell>流向</TableHeaderCell>
+          <TableHeaderCell>简述</TableHeaderCell>
+          <TableHeaderCell>金额</TableHeaderCell>
+          <TableHeaderCell>日期</TableHeaderCell>
+          <TableHeaderCell>备注</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {salesPeople.map((item) => (
           <TableRow key={item.name} className="hover:bg-accent cursor-pointer">
-            <TableCell className="p-2">{item.name}</TableCell>
-            <TableCell className="text-right p-2">{item.leads}</TableCell>
-            <TableCell className="text-right p-2">{item.sales}</TableCell>
-            <TableCell className="text-right p-2">{item.quota}</TableCell>
-            <TableCell className="text-right p-2">{item.variance}</TableCell>
-            <TableCell className="text-right p-2">{item.region}</TableCell>
-            <TableCell className="text-right p-2">
-              <BadgeDelta deltaType={item.deltaType} size="xs">
-                {item.delta}
-              </BadgeDelta>
+            <TableCell className="p-2 flex gap-1">
+              <Badge size={"xs"} className="!rounded-sm">
+                微信
+              </Badge>
+              <Icon size="xs" color="gray" icon={ChevronDoubleRightIcon} />
+              <Badge size={"xs"} className="!rounded-sm">
+                餐饮
+              </Badge>
             </TableCell>
+            <TableCell className="p-2">{item.name}</TableCell>
+            <TableCell className="p-2">${item.leads}</TableCell>
+            <TableCell className="p-2">2023-12-02</TableCell>
+            <TableCell className="p-2">-</TableCell>
           </TableRow>
         ))}
       </TableBody>

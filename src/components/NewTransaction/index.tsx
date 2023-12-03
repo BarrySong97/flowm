@@ -1,39 +1,22 @@
-import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/CMDK";
+import { CommandDialog } from "@/components/CMDK";
+import { CurrencyDollarIcon } from "@heroicons/react/outline";
+
 import { Separator } from "../Seperator";
-import { DatePickerDemo } from "../DatePicker";
-import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
 import { Button } from "../Button";
 import {
-  IcOutlineCompareArrows,
-  IcSharpCategory,
-  MaterialSymbolsCreditCard,
-} from "@/assets/icons";
+  DatePicker,
+  NumberInput,
+  Select,
+  SelectItem,
+  TextInput,
+  Textarea,
+} from "@tremor/react";
 
 export type NewTransactionProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 export function NewTransaction({ open, onOpenChange }: NewTransactionProps) {
-  const languages = [
-    { label: "English", value: "en" },
-    { label: "French", value: "fr" },
-    { label: "German", value: "de" },
-    { label: "Spanish", value: "es" },
-    { label: "Portuguese", value: "pt" },
-    { label: "Russian", value: "ru" },
-    { label: "Japanese", value: "ja" },
-    { label: "Korean", value: "ko" },
-    { label: "Chinese", value: "zh" },
-  ] as const;
   return (
     <>
       <p className="text-sm text-muted-foreground">
@@ -50,114 +33,23 @@ export function NewTransaction({ open, onOpenChange }: NewTransactionProps) {
         }}
       >
         <div className=" pt-3 px-4">
-          <div className="mb-4 text-sm text-card-foreground">
-            New Transaction
+          <div className="mb-4 text-sm text-card-foreground">创建收支</div>
+          <TextInput className="mb-4" placeholder="Tag或简述" />
+          <div className="flex gap-4 mb-4">
+            <DatePicker placeholder="选择日期" />
+            <NumberInput icon={CurrencyDollarIcon} placeholder="金额" />
           </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex itmes-center">
-              <input
-                type="number"
-                placeholder="Num"
-                className="outline-none mr-1  w-[50px] font-bold"
-              />
-              {/* <Separator orientation="vertical" className="h-[22px] mr-3" /> */}
-              <input
-                className="outline-none font-bold flex-1"
-                type="text"
-                placeholder="Transaction Title"
-              />
-            </div>
-            <textarea
-              className="resize-none text-muted-foreground outline-none"
-              rows={2}
-              placeholder="Add description"
-            ></textarea>
+          <div className="mb-4 flex gap-4">
+            <Select placeholder="收支">
+              <SelectItem value="1">收入</SelectItem>
+              <SelectItem value="2">支出</SelectItem>
+            </Select>
+            <Select placeholder="分类">
+              <SelectItem value="1">健身</SelectItem>
+              <SelectItem value="2">餐饮</SelectItem>
+            </Select>
           </div>
-          <div className="flex gap-4">
-            <DatePickerDemo />
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  className={cn("w-[100px] py-1 px-2 h-8 gap-2 justify-start")}
-                >
-                  <IcOutlineCompareArrows />
-                  <span className="text-xs">Flow</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <Command>
-                  <CommandEmpty>No language found.</CommandEmpty>
-                  <CommandGroup>
-                    {languages.map((language) => (
-                      <CommandItem value={language.label} key={language.value}>
-                        <CheckIcon
-                          className={cn("mr-2 h-4 w-4", "opacity-100")}
-                        />
-                        {language.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  className={cn("w-[100px] py-1 px-2 h-8 justify-start gap-2")}
-                >
-                  <IcSharpCategory />
-                  <span className="text-xs">Category</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <Command>
-                  <CommandInput placeholder="Search language..." />
-                  <CommandEmpty>No language found.</CommandEmpty>
-                  <CommandGroup>
-                    {languages.map((language) => (
-                      <CommandItem value={language.label} key={language.value}>
-                        <CheckIcon
-                          className={cn("mr-2 h-4 w-4", "opacity-100")}
-                        />
-                        {language.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  className={cn("w-[100px] py-1 px-2 h-8 justify-start gap-2")}
-                >
-                  <MaterialSymbolsCreditCard />
-                  <span className="text-xs">Accounts</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <Command>
-                  <CommandEmpty>No language found.</CommandEmpty>
-                  <CommandGroup>
-                    {languages.map((language) => (
-                      <CommandItem value={language.label} key={language.value}>
-                        <CheckIcon
-                          className={cn("mr-2 h-4 w-4", "opacity-100")}
-                        />
-                        {language.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </div>
+          <Textarea id="description" placeholder="备注" />
         </div>
         <Separator className="my-4" />
         <div className="flex justify-end pb-3 px-4">

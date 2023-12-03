@@ -9,6 +9,8 @@
     "api": "openapi --input http://localhost:3100/api-json  --useOptions true --output ./temp/api --exportCore false --client axios"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.0.1",
+    "@ant-design/pro-components": "^2.6.43",
     "@heroicons/react": "1.0.6",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",

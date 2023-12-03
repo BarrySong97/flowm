@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/Button";
 import { NewTransaction } from "@/components/NewTransaction";
 import { FC, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 export interface NavigationProps {}
 const Navigation: FC<NavigationProps> = () => {
   const [open, setOpen] = useState(false);
@@ -26,24 +26,27 @@ const Navigation: FC<NavigationProps> = () => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  const location = useLocation();
+  const { pathname } = location;
   const menuItems = [
     {
-      name: "Dashboard",
+      name: "首页",
       icon: <MaterialSymbolsDashboard />,
       href: "/",
     },
     {
-      name: "Transactions",
+      name: "收支",
       icon: <UilTransaction />,
       href: "/transactions",
     },
     {
-      name: "Accounts",
+      name: "账户",
       icon: <MaterialSymbolsCreditCard />,
       href: "/accounts",
     },
     {
-      name: "Debets",
+      name: "负债",
       icon: <PhPlusMinusFill />,
       href: "/debets",
     },
@@ -93,7 +96,9 @@ const Navigation: FC<NavigationProps> = () => {
             <Link to={item.href} className="w-full">
               <Button
                 key={item.name}
-                className="h-8 px-2 py-1 justify-start w-full "
+                className={`${
+                  pathname === item.href ? "bg-accent" : ""
+                } h-8 px-2 py-1 justify-start w-full`}
                 variant={"ghost"}
               >
                 <div className="flex items-center  gap-2">

@@ -8,8 +8,14 @@ import {
   Grid,
   Title,
   BarChart,
+  TabGroup,
+  TabPanels,
+  TabPanel,
+  TabList,
+  Tab,
 } from "@tremor/react";
-
+import LineCharts from "./components/line-chart";
+import DashDonutChart from "./components/bar-chart";
 export interface DashboardProps {}
 const Dashboard: FC<DashboardProps> = () => {
   const colors = {
@@ -22,51 +28,73 @@ const Dashboard: FC<DashboardProps> = () => {
 
   const categories = [
     {
-      title: "Sales",
-      metric: "$ 12,699",
-      metricPrev: "$ 9,456",
+      title: "消费",
+      metric: "12,699",
+      metricPrev: "9,456",
       delta: "34.3%",
       deltaType: "moderateIncrease",
     },
     {
-      title: "Profit",
-      metric: "$ 40,598",
-      metricPrev: "$ 45,564",
+      title: "收入",
+      metric: "40,598",
+      metricPrev: "45,564",
       delta: "10.9%",
       deltaType: "moderateDecrease",
     },
     {
-      title: "Customers",
+      title: "总资产",
       metric: "1,072",
       metricPrev: "856",
       delta: "25.3%",
       deltaType: "moderateIncrease",
+    },
+    {
+      title: "总负债",
+      metric: "1,072",
+      metricPrev: "856",
+      delta: "25.3%",
+      deltaType: "moderateDecrease",
     },
   ];
   const data = [
     {
       Month: "Jan 21",
       Sales: 2890,
-      Profit: 2400,
     },
     {
       Month: "Feb 21",
       Sales: 1890,
-      Profit: 1398,
     },
     // ...
     {
       Month: "Jan 22",
       Sales: 3890,
-      Profit: 2980,
+    },
+    {
+      Month: "Jan 22",
+      Sales: 3890,
+    },
+    {
+      Month: "Jan 22",
+      Sales: 3890,
+    },
+    {
+      Month: "Jan 22",
+      Sales: 3890,
+    },
+    {
+      Month: "Jan 22",
+      Sales: 3890,
+    },
+    {
+      Month: "Jan 22",
+      Sales: 3890,
     },
   ];
 
-  const valueFormatter = (number) =>
-    `$${Intl.NumberFormat("us").format(number).toString()}`;
   return (
     <>
-      <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
+      <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
         {categories.map((item) => (
           <Card key={item.title}>
             <Text>{item.title}</Text>
@@ -76,7 +104,6 @@ const Dashboard: FC<DashboardProps> = () => {
               className="truncate space-x-3"
             >
               <Metric>{item.metric}</Metric>
-              <Text className="truncate">from {item.metricPrev}</Text>
             </Flex>
             <Flex justifyContent="start" className="space-x-2 mt-4">
               <BadgeDelta deltaType={item.deltaType} />
@@ -88,22 +115,26 @@ const Dashboard: FC<DashboardProps> = () => {
           </Card>
         ))}
       </Grid>
-      <div className="mt-6">
-        <Card>
-          <Title>Performance</Title>
-          <Text>Comparison between Sales and Profit</Text>
-          <BarChart
-            className="mt-4 h-80"
-            data={data}
-            index="Month"
-            categories={["Sales", "Profit"]}
-            colors={["indigo", "fuchsia"]}
-            stack={false}
-            yAxisWidth={60}
-            valueFormatter={valueFormatter}
-          />
-        </Card>
-      </div>
+      <TabGroup>
+        <TabList variant="solid" className="mt-8">
+          <Tab>消费</Tab>
+          <Tab>收入</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <div className="mt-4 grid grid-cols-4 gap-6">
+              <LineCharts />
+              <DashDonutChart />
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className="mt-4 grid grid-cols-4 gap-6">
+              <LineCharts />
+              <DashDonutChart />
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </TabGroup>
     </>
   );
 };
