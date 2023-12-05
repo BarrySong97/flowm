@@ -1,3 +1,5 @@
+import { NewTransaction } from "@/components/NewTransaction";
+import { ChevronDoubleRightIcon } from "@heroicons/react/outline";
 import {
   Table,
   TableHeader,
@@ -5,115 +7,168 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Chip,
+  Link,
+  Divider,
+  Button,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  DropdownTrigger,
+  Input,
 } from "@nextui-org/react";
+import { Icon } from "@tremor/react";
+import { useState } from "react";
 
-const salesPeople = [
-  {
-    name: "Peter Doe",
-    leads: 45,
-    sales: "1,000,000",
-    quota: "1,200,000",
-    variance: "low",
-    region: "Region A",
-    delta: "overperforming",
-    deltaType: "moderateIncrease",
-  },
-  {
-    name: "Lena Whitehouse",
-    leads: 35,
-    sales: "900,000",
-    quota: "1,000,000",
-    variance: "low",
-    region: "Region B",
-    delta: "average",
-    deltaType: "unchanged",
-  },
-  {
-    name: "Phil Less",
-    leads: 52,
-    sales: "930,000",
-    quota: "1,000,000",
-    variance: "medium",
-    region: "Region C",
-    delta: "underperforming",
-    deltaType: "moderateDecrease",
-  },
-  {
-    name: "John Camper",
-    leads: 22,
-    sales: "390,000",
-    quota: "250,000",
-    variance: "low",
-    region: "Region A",
-    delta: "overperforming",
-    deltaType: "increase",
-  },
-  {
-    name: "Max Balmoore",
-    leads: 49,
-    sales: "860,000",
-    quota: "750,000",
-    variance: "low",
-    region: "Region B",
-    delta: "overperforming",
-    deltaType: "increase",
-  },
-  {
-    name: "Peter Moore",
-    leads: 82,
-    sales: "1,460,000",
-    quota: "1,500,000",
-    variance: "low",
-    region: "Region A",
-    delta: "average",
-    deltaType: "unchanged",
-  },
-  {
-    name: "Joe Sachs",
-    leads: 49,
-    sales: "1,230,000",
-    quota: "1,800,000",
-    variance: "medium",
-    region: "Region B",
-    delta: "underperforming",
-    deltaType: "moderateDecrease",
-  },
+const statusOptions = [
+  { name: "Active", uid: "active" },
+  { name: "Paused", uid: "paused" },
+  { name: "Vacation", uid: "vacation" },
 ];
 
 export default function Transactions() {
+  function capitalize(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  const [showNew, setShowNew] = useState(false);
   return (
-    <Table
-      color={"primary"}
-      selectionMode="multiple"
-      aria-label="Example static collection table"
-    >
-      <TableHeader>
-        <TableColumn>NAME</TableColumn>
-        <TableColumn>ROLE</TableColumn>
-        <TableColumn>STATUS</TableColumn>
-      </TableHeader>
-      <TableBody>
-        <TableRow key="1">
-          <TableCell>Tony Reichert</TableCell>
-          <TableCell>CEO</TableCell>
-          <TableCell>Active</TableCell>
-        </TableRow>
-        <TableRow key="2">
-          <TableCell>Zoey Lang</TableCell>
-          <TableCell>Technical Lead</TableCell>
-          <TableCell>Paused</TableCell>
-        </TableRow>
-        <TableRow key="3">
-          <TableCell>Jane Fisher</TableCell>
-          <TableCell>Senior Developer</TableCell>
-          <TableCell>Active</TableCell>
-        </TableRow>
-        <TableRow key="4">
-          <TableCell>William Howard</TableCell>
-          <TableCell>Community Manager</TableCell>
-          <TableCell>Vacation</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+    <>
+      <div className="space-y-1">
+        <h4 className="text-medium font-medium">收支列表</h4>
+      </div>
+      <Divider className="my-4" />
+      <div className="flex gap-3 mb-4">
+        <Input
+          isClearable
+          classNames={{
+            base: "w-full sm:max-w-[44%]",
+            inputWrapper: "border-1 h-8",
+          }}
+          placeholder="搜索关键词"
+          size="sm"
+          variant="bordered"
+        />
+        <Dropdown>
+          <DropdownTrigger className="hidden sm:flex">
+            <Button size="sm" variant="flat">
+              收支
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            disallowEmptySelection
+            aria-label="Table Columns"
+            closeOnSelect={false}
+            // selectedKeys={statusFilter}
+            selectionMode="multiple"
+            // onSelectionChange={setStatusFilter}
+          >
+            {statusOptions.map((status) => (
+              <DropdownItem key={status.uid} className="capitalize">
+                {status.name}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+        <Dropdown>
+          <DropdownTrigger className="hidden sm:flex">
+            <Button size="sm" variant="flat">
+              账户
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            disallowEmptySelection
+            aria-label="Table Columns"
+            closeOnSelect={false}
+            // selectedKeys={statusFilter}
+            selectionMode="multiple"
+            // onSelectionChange={setStatusFilter}
+          >
+            {statusOptions.map((status) => (
+              <DropdownItem key={status.uid} className="capitalize">
+                {status.name}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+        <Dropdown>
+          <DropdownTrigger className="hidden sm:flex">
+            <Button size="sm" variant="flat">
+              排序
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            disallowEmptySelection
+            aria-label="Table Columns"
+            closeOnSelect={false}
+            // selectedKeys={statusFilter}
+            selectionMode="multiple"
+            // onSelectionChange={setStatusFilter}
+          >
+            {statusOptions.map((status) => (
+              <DropdownItem key={status.uid} className="capitalize">
+                {status.name}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+        <Dropdown>
+          <DropdownTrigger className="hidden sm:flex">
+            <Button size="sm" variant="flat">
+              分类
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            disallowEmptySelection
+            aria-label="Table Columns"
+            closeOnSelect={false}
+            // selectedKeys={statusFilter}
+            selectionMode="multiple"
+            // onSelectionChange={setStatusFilter}
+          >
+            {statusOptions.map((status) => (
+              <DropdownItem key={status.uid} className="capitalize">
+                {status.name}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+        <Button color="primary" onClick={() => setShowNew(true)} size="sm">
+          新的流水
+        </Button>
+      </div>
+      <Table
+        color={"primary"}
+        selectionMode="multiple"
+        aria-label="Example static collection table"
+      >
+        <TableHeader>
+          <TableColumn>流向</TableColumn>
+          <TableColumn>金额</TableColumn>
+          <TableColumn>简述</TableColumn>
+          <TableColumn>收支</TableColumn>
+          <TableColumn>日期</TableColumn>
+          <TableColumn>备注</TableColumn>
+        </TableHeader>
+        <TableBody>
+          <TableRow key="1">
+            <TableCell>
+              <Chip radius="sm">微信</Chip>
+              <Icon size="xs" color="gray" icon={ChevronDoubleRightIcon} />
+              <Chip radius="sm">饮食</Chip>
+            </TableCell>
+            <TableCell>12</TableCell>
+            <TableCell>
+              <Link underline="hover" className="cursor-pointer">
+                #吃饭
+              </Link>
+            </TableCell>
+            <TableCell>收入</TableCell>
+            <TableCell>2023-12-01</TableCell>
+            <TableCell>-</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <NewTransaction open={showNew} onOpenChange={setShowNew} />
+    </>
   );
 }

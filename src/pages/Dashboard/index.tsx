@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, Tabs, Tab } from "@nextui-org/react";
+import { Card, Tabs, Tab, Divider } from "@nextui-org/react";
 import {
   Metric,
   Text,
@@ -56,6 +56,10 @@ const Dashboard: FC<DashboardProps> = () => {
 
   return (
     <>
+      <div className="space-y-1">
+        <h4 className="text-medium font-medium">首页</h4>
+      </div>
+      <Divider className="my-4" />
       <Grid numItemsSm={2} numItemsLg={4} className="gap-6 mb-4">
         {categories.map((item) => (
           <Card key={item.title} className="p-4">

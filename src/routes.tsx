@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "@/pages/Dashboard";
 import AppLayout from "./layout";
 import Transactions from "./pages/Transactions";
+import Account from "@/pages/Accounts";
 export const routeObject = [
   {
     path: "/",
@@ -13,9 +14,12 @@ export const routeObject = [
         Component: Dashboard,
       },
       {
-        index: true,
         path: "/transactions",
         Component: Transactions,
+      },
+      {
+        path: "/accounts",
+        Component: Account,
       },
     ],
   },
