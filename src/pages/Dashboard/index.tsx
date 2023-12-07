@@ -1,5 +1,12 @@
 import { FC } from "react";
-import { Card, Tabs, Tab, Divider } from "@nextui-org/react";
+import {
+  Card,
+  Tabs,
+  Tab,
+  Divider,
+  CardBody,
+  CardHeader,
+} from "@nextui-org/react";
 import {
   Metric,
   Text,
@@ -10,9 +17,11 @@ import {
   TabPanels,
   TabPanel,
   TabList,
+  Title,
 } from "@tremor/react";
 import LineCharts from "./components/line-chart";
 import DashDonutChart from "./components/bar-chart";
+import SankeyCahart from "./components/sankey-chart";
 export interface DashboardProps {}
 const Dashboard: FC<DashboardProps> = () => {
   const colors = {
@@ -81,20 +90,14 @@ const Dashboard: FC<DashboardProps> = () => {
           </Card>
         ))}
       </Grid>
-      <Tabs aria-label="Dynamic tabs">
-        <Tab title="消费">
-          <div className="grid grid-cols-4 gap-6">
-            <LineCharts />
-            <DashDonutChart />
-          </div>
-        </Tab>
-        <Tab title="收入">
-          <div className="grid grid-cols-4 gap-6">
-            <LineCharts />
-            <DashDonutChart />
-          </div>
-        </Tab>
-      </Tabs>
+      <div className="grid grid-cols-2 gap-6 mb-4">
+        <LineCharts />
+        <DashDonutChart />
+      </div>
+      <Card className="p-4">
+        <Title className="pb-6">账户流向图</Title>
+        <SankeyCahart />
+      </Card>
     </>
   );
 };

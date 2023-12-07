@@ -23,7 +23,7 @@ export interface NavigationProps {}
 const Navigation: FC<NavigationProps> = () => {
   const menuItems = [
     {
-      name: "首页",
+      name: "看板",
       icon: <MaterialSymbolsDashboard />,
       href: "/",
     },
@@ -52,7 +52,7 @@ const Navigation: FC<NavigationProps> = () => {
   const { pathname } = useLocation();
   const selectedKeys = [pathname];
   return (
-    <div className="h-screen  py-4 w-[220px] flex flex-col justify-between">
+    <div className="h-full py-4 w-[220px] flex flex-col justify-between">
       <div>
         <Dropdown placement="bottom-end">
           <DropdownTrigger>

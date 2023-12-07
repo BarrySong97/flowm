@@ -16,12 +16,12 @@ const AppLayout = () => {
 
   return (
     <ErrorBoundary fallback={<div>error</div>}>
-      <div className="flex">
+      <div className="flex overflow-hidden h-screen">
         <nav>
           <Navigation />
         </nav>
         <Separator orientation="vertical" className="h-screen" />
-        <main className="flex-1">
+        <main className="flex-1 overflow-auto">
           <PageWrapper>
             <Outlet />
           </PageWrapper>

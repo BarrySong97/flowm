@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.recharts-pie-label-text {
+    @apply text-xs;
+}
 
 @layer base {
     :root {

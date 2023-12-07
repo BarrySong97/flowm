@@ -33,10 +33,10 @@ function sumArray(array, metric) {
 
 export default function LineCharts() {
   return (
-    <Card className="p-4 col-span-3">
+    <Card className="p-4 ">
       <Title>12月消费趋势</Title>
       <AreaChart
-        className="h-40 mt-6 "
+        className="h-64 mt-6 "
         data={data}
         index="Month"
         categories={["Visitors"]}
