@@ -38,6 +38,53 @@ export function PhPlusMinusFill(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function MaterialSymbolsExportNotesSharp(
+  props: SVGProps<SVGSVGElement>
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="m16.2 20.5l2.8-2.8V20h1v-4h-4v1h2.3l-2.8 2.8l.7.7ZM18 23q-2.075 0-3.537-1.463T13 18q0-2.075 1.463-3.537T18 13q2.075 0 3.538 1.463T23 18q0 2.075-1.463 3.538T18 23ZM7 9h10V7H7v2Zm4.675 12H3V3h18v8.7q-.725-.35-1.463-.525T18 11q-.275 0-.513.013t-.487.062V11H7v2h6.125q-.45.425-.812.925T11.675 15H7v2h4.075q-.05.25-.062.488T11 18q0 .825.15 1.538T11.675 21Z"
+      ></path>
+    </svg>
+  );
+}
+export function MdiSortAscending(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M19 17h3l-4 4l-4-4h3V3h2M2 17h10v2H2M6 5v2H2V5m0 6h7v2H2v-2Z"
+      ></path>
+    </svg>
+  );
+}
+export function MaterialSymbolsAdd(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2v-6Z"></path>
+    </svg>
+  );
+}
 export function MajesticonsSelector(props: SVGProps<SVGSVGElement>) {
   return (
     <svg

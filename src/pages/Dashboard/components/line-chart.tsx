@@ -33,7 +33,7 @@ function sumArray(array, metric) {
 
 export default function LineCharts() {
   return (
-    <Card className="p-4 ">
+    <Card className="p-4 " radius="sm">
       <Title>12月消费趋势</Title>
       <AreaChart
         className="h-64 mt-6 "

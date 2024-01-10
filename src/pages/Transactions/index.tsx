@@ -1,173 +1,220 @@
-import { NewTransaction } from "@/components/NewTransaction";
-import { ChevronDoubleRightIcon } from "@heroicons/react/outline";
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Chip,
-  Link,
-  Divider,
+  MaterialSymbolsAdd,
+  MaterialSymbolsExportNotesSharp,
+  MdiSortAscending,
+} from "@/assets/icons";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  Row,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
+
+import { NewTransaction } from "@/components/NewTransaction";
+import {
   Button,
   Dropdown,
   DropdownMenu,
   DropdownItem,
   DropdownTrigger,
-  Input,
 } from "@nextui-org/react";
-import { Icon } from "@tremor/react";
-import { useState } from "react";
-
-const statusOptions = [
-  { name: "Active", uid: "active" },
-  { name: "Paused", uid: "paused" },
-  { name: "Vacation", uid: "vacation" },
-];
-
+import { useMemo, useRef, useState } from "react";
+import { useVirtual } from "react-virtual";
+export type Transactions = {
+  from: string;
+  to: string;
+  number: number;
+  desc: string;
+  flow: string;
+  date: string;
+};
 export default function Transactions() {
-  function capitalize(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
   const [showNew, setShowNew] = useState(false);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const columns = useMemo<ColumnDef<Transactions>[]>(
+    () => [
+      {
+        accessorKey: "flow",
+        cell: (info) => info.getValue(),
+        header: () => <span>Flow</span>,
+      },
+      {
+        accessorFn: (row) => row.lastName,
+        id: "lastName",
+        cell: (info) => info.getValue(),
+        header: () => <span>Last Name</span>,
+      },
+      {
+        accessorKey: "age",
+        header: () => "Age",
+        size: 50,
+      },
+      {
+        accessorKey: "visits",
+        header: () => <span>Visits</span>,
+        size: 50,
+      },
+      {
+        accessorKey: "status",
+        header: "Status",
+      },
+      {
+        accessorKey: "progress",
+        header: "Profile Progress",
+        size: 80,
+      },
+      {
+        accessorKey: "createdAt",
+        header: "Created At",
+        cell: (info) => info.getValue<Date>().toLocaleString(),
+      },
+    ],
+    []
+  );
   return (
     <>
-      <div className="space-y-1">
-        <h4 className="text-medium font-medium">收支列表</h4>
-      </div>
-      <Divider className="my-4" />
-      <div className="flex gap-3 mb-4">
-        <Input
-          isClearable
-          classNames={{
-            base: "w-full sm:max-w-[44%]",
-            inputWrapper: "border-1 h-8",
-          }}
-          placeholder="搜索关键词"
-          size="sm"
-          variant="bordered"
-        />
-        <Dropdown>
-          <DropdownTrigger className="hidden sm:flex">
-            <Button size="sm" variant="flat">
-              收支
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            disallowEmptySelection
-            aria-label="Table Columns"
-            closeOnSelect={false}
-            // selectedKeys={statusFilter}
-            selectionMode="multiple"
-            // onSelectionChange={setStatusFilter}
-          >
-            {statusOptions.map((status) => (
-              <DropdownItem key={status.uid} className="capitalize">
-                {status.name}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-        <Dropdown>
-          <DropdownTrigger className="hidden sm:flex">
-            <Button size="sm" variant="flat">
-              账户
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            disallowEmptySelection
-            aria-label="Table Columns"
-            closeOnSelect={false}
-            // selectedKeys={statusFilter}
-            selectionMode="multiple"
-            // onSelectionChange={setStatusFilter}
-          >
-            {statusOptions.map((status) => (
-              <DropdownItem key={status.uid} className="capitalize">
-                {status.name}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-        <Dropdown>
-          <DropdownTrigger className="hidden sm:flex">
-            <Button size="sm" variant="flat">
-              排序
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            disallowEmptySelection
-            aria-label="Table Columns"
-            closeOnSelect={false}
-            // selectedKeys={statusFilter}
-            selectionMode="multiple"
-            // onSelectionChange={setStatusFilter}
-          >
-            {statusOptions.map((status) => (
-              <DropdownItem key={status.uid} className="capitalize">
-                {status.name}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-        <Dropdown>
-          <DropdownTrigger className="hidden sm:flex">
-            <Button size="sm" variant="flat">
-              分类
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            disallowEmptySelection
-            aria-label="Table Columns"
-            closeOnSelect={false}
-            // selectedKeys={statusFilter}
-            selectionMode="multiple"
-            // onSelectionChange={setStatusFilter}
-          >
-            {statusOptions.map((status) => (
-              <DropdownItem key={status.uid} className="capitalize">
-                {status.name}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-        <Button color="primary" onClick={() => setShowNew(true)} size="sm">
-          新的流水
-        </Button>
-      </div>
-      <Table
-        color={"primary"}
-        selectionMode="multiple"
+      <table
         aria-label="Example static collection table"
+        role="grid"
+        aria-describedby=""
+        style={{ height: 300, overflow: "auto", border: "1px solid" }}
+        className="min-w-full  w-full p-0 shadow-md"
       >
-        <TableHeader>
-          <TableColumn>流向</TableColumn>
-          <TableColumn>金额</TableColumn>
-          <TableColumn>简述</TableColumn>
-          <TableColumn>收支</TableColumn>
-          <TableColumn>日期</TableColumn>
-          <TableColumn>备注</TableColumn>
-        </TableHeader>
-        <TableBody>
-          <TableRow key="1">
-            <TableCell>
-              <Chip radius="sm">微信</Chip>
-              <Icon size="xs" color="gray" icon={ChevronDoubleRightIcon} />
-              <Chip radius="sm">饮食</Chip>
-            </TableCell>
-            <TableCell>12</TableCell>
-            <TableCell>
-              <Link underline="hover" className="cursor-pointer">
+        <thead role="rowgroup">
+          <tr
+            role="row"
+            className="group outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2"
+          >
+            <th
+              data-key="$.0"
+              role="columnheader"
+              id="react-aria1254617425-:rs:-$.0"
+              className="rounded-t-md group px-3 h-10 text-left align-middle bg-default-100 whitespace-nowrap text-foreground-500 text-tiny font-semibold  last:rounded-r-lg data-[sortable=true]:transition-colors data-[sortable=true]:cursor-pointer data-[hover=true]:text-foreground-400 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 "
+            >
+              流向
+            </th>
+            <th
+              data-key="$.1"
+              role="columnheader"
+              id="react-aria1254617425-:rs:-$.1"
+              className="group px-3 h-10 text-left align-middle bg-default-100 whitespace-nowrap text-foreground-500 text-tiny font-semibold first:rounded-l-lg last:rounded-r-lg data-[sortable=true]:transition-colors data-[sortable=true]:cursor-pointer data-[hover=true]:text-foreground-400 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 !rounded-none"
+            >
+              金额
+            </th>
+            <th
+              data-key="$.2"
+              role="columnheader"
+              id="react-aria1254617425-:rs:-$.2"
+              className="group px-3 h-10 text-left align-middle bg-default-100 whitespace-nowrap text-foreground-500 text-tiny font-semibold first:rounded-l-lg last:rounded-r-lg data-[sortable=true]:transition-colors data-[sortable=true]:cursor-pointer data-[hover=true]:text-foreground-400 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 !rounded-none"
+            >
+              简述
+            </th>
+            <th
+              data-key="$.3"
+              role="columnheader"
+              id="react-aria1254617425-:rs:-$.3"
+              className="group px-3 h-10 text-left align-middle bg-default-100 whitespace-nowrap text-foreground-500 text-tiny font-semibold first:rounded-l-lg last:rounded-r-lg data-[sortable=true]:transition-colors data-[sortable=true]:cursor-pointer data-[hover=true]:text-foreground-400 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 !rounded-none"
+            >
+              收支
+            </th>
+            <th
+              data-key="$.4"
+              role="columnheader"
+              id="react-aria1254617425-:rs:-$.4"
+              className="group px-3 h-10 text-left align-middle bg-default-100 whitespace-nowrap text-foreground-500 text-tiny font-semibold first:rounded-l-lg last:rounded-r-lg data-[sortable=true]:transition-colors data-[sortable=true]:cursor-pointer data-[hover=true]:text-foreground-400 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 !rounded-none"
+            >
+              日期
+            </th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          <tr
+            data-first="true"
+            data-last="true"
+            style={{ height: 60 }}
+            role="row"
+            data-key="0"
+            aria-labelledby="react-aria1254617425-:rs:-0-$.0"
+            className="group outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 border-b border-slate-200"
+          >
+            <td
+              data-key="0.0"
+              role="rowheader"
+              id="react-aria1254617425-:rs:-0-$.0"
+              className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 before:bg-primary/20 data-[selected=true]:text-primary first:before:rounded-l-lg last:before:rounded-r-lg flex items-center"
+            >
+              <div className="relative max-w-fit inline-flex items-center justify-between box-border whitespace-nowrap px-1 h-6 text-tiny rounded-small bg-default text-default-foreground">
+                <span className="flex-1 text-inherit font-normal px-1">
+                  微信
+                </span>
+              </div>
+              <span className="tremor-Icon-root inline-flex flex-shrink-0 items-center text-gray-500 px-1.5 py-1.5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  className="tremor-Icon-icon shrink-0 h-3 w-3"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13 5l7 7-7 7M5 5l7 7-7 7"
+                  ></path>
+                </svg>
+              </span>
+              <div className="relative max-w-fit inline-flex items-center justify-between box-border whitespace-nowrap px-1 h-6 text-tiny rounded-small bg-default text-default-foreground">
+                <span className="flex-1 text-inherit font-normal px-1">
+                  饮食
+                </span>
+              </div>
+            </td>
+            <td
+              data-key="0.1"
+              role="gridcell"
+              className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 before:bg-primary/20 data-[selected=true]:text-primary first:before:rounded-l-lg last:before:rounded-r-lg"
+            >
+              <span>12</span>
+            </td>
+            <td
+              data-key="0.2"
+              role="gridcell"
+              className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 before:bg-primary/20 data-[selected=true]:text-primary first:before:rounded-l-lg last:before:rounded-r-lg"
+            >
+              <a
+                className="relative inline-flex items-center tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 text-medium text-primary hover:underline hover:opacity-80 active:opacity-disabled transition-opacity underline-offset-4 cursor-pointer"
+                tabindex="0"
+                role="link"
+              >
                 #吃饭
-              </Link>
-            </TableCell>
-            <TableCell>收入</TableCell>
-            <TableCell>2023-12-01</TableCell>
-            <TableCell>-</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+              </a>
+            </td>
+            <td
+              data-key="0.3"
+              role="gridcell"
+              className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 before:bg-primary/20 data-[selected=true]:text-primary first:before:rounded-l-lg last:before:rounded-r-lg"
+            >
+              <div className="relative max-w-fit inline-flex items-center justify-between box-border whitespace-nowrap px-1 h-6 text-tiny rounded-small bg-default text-default-foreground">
+                <span className="flex-1 text-inherit font-normal px-1">
+                  收入
+                </span>
+              </div>
+            </td>
+            <td
+              data-key="0.4"
+              role="gridcell"
+              className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 before:bg-primary/20 data-[selected=true]:text-primary first:before:rounded-l-lg last:before:rounded-r-lg"
+            >
+              <span>2023-12-01</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <NewTransaction open={showNew} onOpenChange={setShowNew} />
     </>
   );

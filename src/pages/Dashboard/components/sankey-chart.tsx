@@ -1,68 +1,45 @@
-import React, { FC } from "react";
-import { ResponsiveContainer, Sankey, Tooltip } from "recharts";
-export interface SankeyCahartProps {}
-const data0 = {
-  nodes: [
-    {
-      name: "Visit",
+import { Sankey } from "@ant-design/charts";
+import ReactDOM from "react-dom";
+
+const DemoSankey = () => {
+  const config = {
+    layout: { nodeAlign: "center", nodePadding: 0.03 },
+    data: {
+      type: "fetch",
+      value: "https://assets.antv.antgroup.com/g2/energy.json",
+      transform: [
+        {
+          type: "custom",
+          callback: (data) => ({
+            links: data,
+          }),
+        },
+      ],
     },
-    {
-      name: "Direct-Favourite",
+    scale: {
+      color: {
+        range: [
+          "#4e79a7",
+          "#f28e2c",
+          "#e15759",
+          "#76b7b2",
+          "#59a14f",
+          "#edc949",
+          "#af7aa1",
+          "#ff9da7",
+          "#9c755f",
+          "#bab0ab",
+        ],
+      },
     },
-    {
-      name: "Page-Click",
+    style: {
+      labelSpacing: 3,
+      labelFontWeight: "bold",
+      nodeStrokeWidth: 1.2,
+      linkFillOpacity: 0.4,
     },
-    {
-      name: "Detail-Favourite",
-    },
-    {
-      name: "Lost",
-    },
-  ],
-  links: [
-    {
-      source: 0,
-      target: 1,
-      value: 3728.3,
-    },
-    {
-      source: 0,
-      target: 2,
-      value: 354170,
-    },
-    {
-      source: 2,
-      target: 3,
-      value: 62429,
-    },
-    {
-      source: 2,
-      target: 4,
-      value: 291741,
-    },
-  ],
+  };
+  return <Sankey {...config} />;
 };
 
-const SankeyCahart: FC<SankeyCahartProps> = () => {
-  return (
-    <ResponsiveContainer width="100%" height={450}>
-      <Sankey
-        width={960}
-        height={500}
-        data={data0}
-        nodePadding={50}
-        margin={{
-          left: 200,
-          right: 200,
-          top: 100,
-          bottom: 100,
-        }}
-        link={{ stroke: "#77c878" }}
-      >
-        <Tooltip />
-      </Sankey>
-    </ResponsiveContainer>
-  );
-};
-
-export default SankeyCahart;
+export default DemoSankey;

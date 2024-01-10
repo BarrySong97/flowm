@@ -33,7 +33,7 @@ const Navigation: FC<NavigationProps> = () => {
       href: "/transactions",
     },
     {
-      name: "账户",
+      name: "资产",
       icon: <MaterialSymbolsCreditCard />,
       href: "/accounts",
     },
