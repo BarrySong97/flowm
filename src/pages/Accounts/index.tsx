@@ -15,16 +15,12 @@ export default function Example() {
   ];
   return (
     <>
-      <div className="space-y-1">
-        <h4 className="text-medium font-medium">账户</h4>
-      </div>
-      <Divider className="my-4" />
       <Tabs aria-label="Dynamic tabs" className="mb-2">
         <Tab
           title={
             <div className="flex items-center space-x-2">
               <MaterialSymbolsFormatListBulleted />
-              <span>卡片视图</span>
+              <span>消费</span>
             </div>
           }
         >
@@ -34,7 +30,23 @@ export default function Example() {
           title={
             <div className="flex items-center space-x-2">
               <MaterialSymbolsCreditCardSharp />
-              <span>列表视图</span>
+              <span>收入</span>
+            </div>
+          }
+        ></Tab>
+        <Tab
+          title={
+            <div className="flex items-center space-x-2">
+              <MaterialSymbolsCreditCardSharp />
+              <span>资产</span>
+            </div>
+          }
+        ></Tab>
+        <Tab
+          title={
+            <div className="flex items-center space-x-2">
+              <MaterialSymbolsCreditCardSharp />
+              <span>负债</span>
             </div>
           }
         ></Tab>

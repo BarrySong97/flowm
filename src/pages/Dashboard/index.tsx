@@ -1,40 +1,21 @@
 import { FC } from "react";
 import { ConfigProvider, Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-
 import {
   Button,
   Card,
-  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Select,
-  SelectItem,
-  Tab,
-  Tabs,
 } from "@nextui-org/react";
-import {
-  Metric,
-  Text,
-  Flex,
-  BadgeDelta,
-  Grid,
-  Title,
-  AreaChart,
-} from "@tremor/react";
-import LineCharts from "./components/line-chart";
-import DashDonutChart from "./components/pie-chart";
-import SankeyCahart from "./components/sankey-chart";
-import { AnimatePresence } from "framer-motion";
-import { ChevronDownIcon } from "@heroicons/react/outline";
 import {
   MaterialSymbolsAdd,
   MaterialSymbolsExportNotesSharp,
   MdiSortAscending,
 } from "@/assets/icons";
-import { AppArea } from "./components/area-chart";
+import ChartBlock from "./components/chart-block";
+
 export interface DashboardProps {}
 export const animals = [
   {
@@ -177,85 +158,8 @@ const data: DataType[] = [
   },
 ];
 const Dashboard: FC<DashboardProps> = () => {
-  const colors = {
-    increase: "emerald",
-    moderateIncrease: "emerald",
-    unchanged: "orange",
-    moderateDecrease: "rose",
-    decrease: "rose",
-  };
-
-  const categories = [
-    {
-      title: "12月消费",
-      metric: "12,699",
-      metricPrev: "9,456",
-      delta: "34.3%",
-      deltaType: "moderateIncrease",
-    },
-    {
-      title: "12月收入",
-      metric: "40,598",
-      metricPrev: "45,564",
-      delta: "10.9%",
-      deltaType: "moderateDecrease",
-    },
-    {
-      title: "总负债",
-      metric: "40,598",
-      metricPrev: "45,564",
-      delta: "10.9%",
-      deltaType: "moderateDecrease",
-    },
-    {
-      title: "总资产",
-      metric: "40,598",
-      metricPrev: "45,564",
-      delta: "10.9%",
-      deltaType: "moderateDecrease",
-    },
-  ];
-  const chartdata = [
-    {
-      date: "Jan 22",
-      SemiAnalysis: 2890,
-      "The Pragmatic Engineer": 2338,
-    },
-    {
-      date: "Feb 22",
-      SemiAnalysis: 2756,
-      "The Pragmatic Engineer": 2103,
-    },
-    {
-      date: "Mar 22",
-      SemiAnalysis: 3322,
-      "The Pragmatic Engineer": 2194,
-    },
-    {
-      date: "Apr 22",
-      SemiAnalysis: 3470,
-      "The Pragmatic Engineer": 2108,
-    },
-    {
-      date: "May 22",
-      SemiAnalysis: 3475,
-      "The Pragmatic Engineer": 1812,
-    },
-    {
-      date: "Jun 22",
-      SemiAnalysis: 3129,
-      "The Pragmatic Engineer": 1726,
-    },
-  ];
   return (
     <div className="flex gap-6  relative items-stretch h-full">
-      <div className="flex-1 gap-4 flex flex-col justify-between">
-        {categories.map((item) => (
-          <Card radius="sm" key={item.title} className=" h-full">
-            <AppArea />
-          </Card>
-        ))}
-      </div>
       <div className="flex-1 flex flex-col ">
         <div className="flex justify-between mb-4 items-center">
           <div className="flex gap-2 items-center">
@@ -318,6 +222,9 @@ const Dashboard: FC<DashboardProps> = () => {
             <Table pagination={false} columns={columns} dataSource={data} />
           </ConfigProvider>
         </Card>
+      </div>
+      <div className="flex-1 gap-4 flex flex-col ">
+        <ChartBlock />
       </div>
     </div>
   );

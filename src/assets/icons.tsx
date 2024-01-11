@@ -274,6 +274,22 @@ export function MaterialSymbolsEditSquareOutlineRounded(
   );
 }
 
+export function MdiChartAreasplineVariant(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M22 21H2V3h2v12.54L9.5 6L16 9.78l4.24-7.33l1.73 1z"
+      ></path>
+    </svg>
+  );
+}
 export function MaterialSymbolsDashboard(props: SVGProps<SVGSVGElement>) {
   return (
     <svg

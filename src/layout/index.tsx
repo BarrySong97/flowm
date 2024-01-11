@@ -1,13 +1,9 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
-
 import { useAtom } from "jotai";
 import { LocaleAtom } from "@/Atoms";
-import { Separator } from "@/components/Seperator";
 import PageWrapper from "@/components/PageWraper";
 import {
-  Avatar,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -23,7 +19,6 @@ import {
   IcRoundCategory,
   MaterialSymbolsCreditCard,
   MaterialSymbolsDashboard,
-  PhPlusMinusFill,
   UilTransaction,
 } from "@/assets/icons";
 export const LocaleList: Array<{ label: string; value: LocalType }> = [
@@ -39,6 +34,21 @@ const AppLayout = () => {
       name: "看板",
       icon: <MaterialSymbolsDashboard />,
       href: "/",
+    },
+    {
+      name: "流水",
+      icon: <UilTransaction />,
+      href: "/transactions",
+    },
+    {
+      name: "账户",
+      icon: <MaterialSymbolsCreditCard />,
+      href: "/accounts",
+    },
+    {
+      name: "设置",
+      icon: <IcRoundCategory />,
+      href: "/category",
     },
   ];
   const navigate = useNavigate();
