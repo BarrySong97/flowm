@@ -1,7 +1,9 @@
-import { Area } from "@ant-design/charts";
+import { CollapsibleAtom } from "@/Atoms";
+import { Area, AreaConfig } from "@ant-design/charts";
+import { Renderer as SVGRenderer } from "@antv/g-svg";
 
 export const AppArea = () => {
-  const config = {
+  const config: AreaConfig = {
     data: {
       type: "fetch",
       value: "https://assets.antv.antgroup.com/g2/aapl.json",
@@ -13,5 +15,9 @@ export const AppArea = () => {
     },
   };
 
-  return <Area {...config} autoFit />;
+  return (
+    <div>
+      <Area {...config} />
+    </div>
+  );
 };

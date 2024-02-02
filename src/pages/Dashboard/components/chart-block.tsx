@@ -67,97 +67,41 @@ const ChartBlock: FC<ChartBlockProps> = () => {
               </Card>
             ))}
           </Grid>
-          <Tabs
-            aria-label="Options"
-            color="primary"
-            variant="underlined"
-            classNames={{
-              tabList:
-                "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-              cursor: "w-full ",
-              panel: "pb-0 flex-1",
-              tab: "max-w-fit px-0 h-12",
-            }}
-          >
-            <Tab key="expense" title={"消费"}>
-              <Card radius="sm" key={item.title} className="h-full">
-                <div className="flex justify-between items-center p-6 pb-0">
-                  <div>
-                    <Text>{item.title}</Text>
-
-                    <Metric>{item.metric}</Metric>
-                  </div>
-                  <Tabs
-                    selectedKey={view}
-                    onSelectionChange={(e) => setView(e as string)}
-                    size="sm"
-                    radius="sm"
-                    aria-label="Options"
-                  >
-                    <Tab
-                      key="area"
-                      title={
-                        <div className="flex items-center space-x-2">
-                          <MdiChartAreasplineVariant className="text-base" />
-                          <span>折线面积</span>
-                        </div>
-                      }
-                    ></Tab>
-                    <Tab
-                      key="tree"
-                      title={
-                        <div className="flex items-center space-x-2">
-                          <MaterialSymbolsDashboard className="text-base" />
-                          <span>矩阵树图</span>
-                        </div>
-                      }
-                    ></Tab>
-                  </Tabs>
-                </div>
-                {view === "area" ? <AppArea /> : null}
-                {view === "tree" ? <AppTreemap /> : null}
-              </Card>
-            </Tab>
-            <Tab key="income" title={"收入"}>
-              <Card radius="sm" key={item.title} className="h-full">
-                <div className="flex justify-between items-center p-6 pb-0">
-                  <div>
-                    <Text>{item.title}</Text>
-
-                    <Metric>{item.metric}</Metric>
-                  </div>
-                  <Tabs
-                    selectedKey={view}
-                    onSelectionChange={(e) => setView(e as string)}
-                    size="sm"
-                    radius="sm"
-                    aria-label="Options"
-                  >
-                    <Tab
-                      key="area"
-                      title={
-                        <div className="flex items-center space-x-2">
-                          <MdiChartAreasplineVariant className="text-base" />
-                          <span>折线面积</span>
-                        </div>
-                      }
-                    ></Tab>
-                    <Tab
-                      key="tree"
-                      title={
-                        <div className="flex items-center space-x-2">
-                          <MaterialSymbolsDashboard className="text-base" />
-                          <span>矩阵树图</span>
-                        </div>
-                      }
-                    ></Tab>
-                  </Tabs>
-                </div>
-                {view === "area" ? <AppArea /> : null}
-                {view === "tree" ? <AppTreemap /> : null}
-              </Card>
-            </Tab>
-          </Tabs>
+          <Card radius="sm" key={item.title} className="h-full">
+            <div className="flex justify-between items-center p-6 pb-0">
+              <div>
+                <Text>{item.title}</Text>
+              </div>
+              <Tabs
+                selectedKey={view}
+                onSelectionChange={(e) => setView(e as string)}
+                size="sm"
+                radius="sm"
+                aria-label="Options"
+              >
+                <Tab
+                  key="area"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <MdiChartAreasplineVariant className="text-base" />
+                      <span>折线面积</span>
+                    </div>
+                  }
+                ></Tab>
+                <Tab
+                  key="tree"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <MaterialSymbolsDashboard className="text-base" />
+                      <span>矩阵树图</span>
+                    </div>
+                  }
+                ></Tab>
+              </Tabs>
+            </div>
+            {view === "area" ? <AppArea /> : null}
+            {view === "tree" ? <AppTreemap /> : null}
+          </Card>
         </div>
       ))}
     </>
