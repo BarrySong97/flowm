@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Card, Tab, Tabs } from "@nextui-org/react";
+import { Card, Select, SelectItem } from "@nextui-org/react";
 import { AppArea } from "./area-chart";
 import { BadgeDelta, Flex, Grid, Metric, Text } from "@tremor/react";
 import { AppTreemap } from "./tree-chart";
@@ -7,6 +7,9 @@ import {
   MaterialSymbolsDashboard,
   MdiChartAreasplineVariant,
 } from "@/assets/icons";
+import dayjs from "dayjs";
+import { TabPane, Tabs } from "@douyinfe/semi-ui";
+const month = dayjs(new Date()).month() + 1;
 export interface ChartBlockProps {}
 const ChartBlock: FC<ChartBlockProps> = () => {
   const categories = [
@@ -41,66 +44,81 @@ const ChartBlock: FC<ChartBlockProps> = () => {
       delta: "25.3%",
       deltaType: "moderateIncrease",
     },
+    {
+      title: "总收入",
+      metric: "1,072",
+      metricPrev: "856",
+      delta: "25.3%",
+      deltaType: "moderateIncrease",
+    },
   ];
+  const Months = new Array(12)
+    .fill(0)
+    .map((_, index) => ({ label: `${index + 1}月`, value: index + 1 }));
   const [view, setView] = useState("area");
+  const [checked, setChecked] = useState<number>(0);
   return (
     <>
       {categories.map((item) => (
         <div className="h-full flex flex-col gap-6 ">
-          <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
-            {categories2.map((item) => (
-              <Card key={item.title} className="p-6">
-                <Flex alignItems="start">
-                  <Text>{item.title}</Text>
-                  <BadgeDelta deltaType={item.deltaType}>
-                    {item.delta}
-                  </BadgeDelta>
-                </Flex>
-                <Flex
-                  justifyContent="start"
-                  alignItems="baseline"
-                  className="truncate space-x-3"
+          <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
+            {categories2.map((item, index) => {
+              const isChecked = checked === index;
+              return (
+                <Card
+                  key={item.title}
+                  className={`p-6 ${
+                    isChecked ? "border-2 border-blue-500" : ""
+                  }`}
+                  isPressable
+                  onPress={() => setChecked(index)}
                 >
-                  <Metric>{item.metric}</Metric>
-                  <Text className="truncate">from {item.metricPrev}</Text>
-                </Flex>
-              </Card>
-            ))}
+                  <Flex alignItems="start">
+                    <Text>{item.title}</Text>
+                    <BadgeDelta deltaType={item.deltaType}>
+                      {item.delta}
+                    </BadgeDelta>
+                  </Flex>
+                  <Flex
+                    justifyContent="start"
+                    alignItems="baseline"
+                    className="truncate space-x-3"
+                  >
+                    <Metric>{item.metric}</Metric>
+                  </Flex>
+                </Card>
+              );
+            })}
           </Grid>
-          <Card radius="sm" key={item.title} className="h-full">
+          <Card radius="sm" key={item.title}>
             <div className="flex justify-between items-center p-6 pb-0">
               <div>
-                <Text>{item.title}</Text>
+                {/* <Select
+                  size="sm"
+                  radius="sm"
+                  defaultSelectedKeys={[month]}
+                  labelPlacement="outside"
+                  className="w-[140px]"
+                >
+                  {Months.map((month) => (
+                    <SelectItem key={month.value} value={month.value}>
+                      {month.label}
+                    </SelectItem>
+                  ))}
+                </Select> */}
               </div>
-              <Tabs
-                selectedKey={view}
-                onSelectionChange={(e) => setView(e as string)}
-                size="sm"
-                radius="sm"
-                aria-label="Options"
-              >
-                <Tab
-                  key="area"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <MdiChartAreasplineVariant className="text-base" />
-                      <span>折线面积</span>
-                    </div>
-                  }
-                ></Tab>
-                <Tab
-                  key="tree"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <MaterialSymbolsDashboard className="text-base" />
-                      <span>矩阵树图</span>
-                    </div>
-                  }
-                ></Tab>
+              <Tabs type="button">
+                <TabPane tab="1月" itemKey="1"></TabPane>
+                <TabPane tab="3月" itemKey="2"></TabPane>
+                <TabPane tab="6月" itemKey="3"></TabPane>
+                <TabPane tab="1年" itemKey="4"></TabPane>
+                <TabPane tab="3年" itemKey="5"></TabPane>
+                <TabPane tab="所有" itemKey="6"></TabPane>
               </Tabs>
             </div>
-            {view === "area" ? <AppArea /> : null}
-            {view === "tree" ? <AppTreemap /> : null}
+            <div className="h-[400px]">
+              <AppArea />
+            </div>
           </Card>
         </div>
       ))}

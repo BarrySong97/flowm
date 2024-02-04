@@ -6,12 +6,22 @@ import {
   DropdownTrigger,
   Navbar,
   NavbarBrand,
+  Link,
   NavbarContent,
+  NavbarItem,
   Select,
   SelectItem,
   User,
 } from "@nextui-org/react";
+import {
+  IcRoundCategory,
+  MaterialSymbolsCreditCard,
+  MaterialSymbolsDashboard,
+  PhPlusMinusFill,
+  UilTransaction,
+} from "@/assets/icons";
 import dayjs from "dayjs";
+import { useLocation } from "react-router-dom";
 export interface NavbarProps {}
 const Year = dayjs(new Date()).year();
 const AppNavbar: FC<NavbarProps> = () => {
@@ -25,12 +35,41 @@ const AppNavbar: FC<NavbarProps> = () => {
       value: "2023",
     },
   ];
-
+  const menuItems = [
+    {
+      name: "看板",
+      icon: <MaterialSymbolsDashboard />,
+      href: "/",
+    },
+    {
+      name: "流水",
+      icon: <UilTransaction />,
+      href: "/transactions",
+    },
+    {
+      name: "资产",
+      icon: <MaterialSymbolsCreditCard />,
+      href: "/accounts",
+    },
+    {
+      name: "分类",
+      icon: <IcRoundCategory />,
+      href: "/category",
+    },
+    {
+      name: "负债",
+      icon: <PhPlusMinusFill />,
+      href: "/debets",
+    },
+  ];
+  const location = useLocation();
+  const pathname = location.pathname;
   return (
     <Navbar
       isBordered
+      className="bg-white"
       classNames={{
-        wrapper: "!max-w-[100%]",
+        wrapper: "!max-w-[100%] ",
         item: [
           "flex",
           "relative",
@@ -48,21 +87,6 @@ const AppNavbar: FC<NavbarProps> = () => {
         brand: "!flex-[0]",
       }}
     >
-      <NavbarBrand>
-        <Select
-          size="sm"
-          radius="sm"
-          defaultSelectedKeys={[Year.toString()]}
-          labelPlacement="outside"
-          className="w-[140px]"
-        >
-          {Years.map((year) => (
-            <SelectItem key={year.value} value={year.value}>
-              {year.label}
-            </SelectItem>
-          ))}
-        </Select>
-      </NavbarBrand>
       <NavbarContent justify="end">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>

@@ -8,8 +8,9 @@ export const AppArea = () => {
       type: "fetch",
       value: "https://assets.antv.antgroup.com/g2/aapl.json",
     },
-    xField: (d) => new Date(d.date),
+    xField: (d: any) => new Date(d.date),
     yField: "close",
+    height: 400,
     style: {
       fill: "l(270) 0:#ffffff 0.5:#7ec2f3 1:#1890ff",
     },

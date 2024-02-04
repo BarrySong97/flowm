@@ -1,0 +1,11 @@
+.semi-tree-option {
+  border-radius: 6px;
+}
+
+.account_item .account_options {
+  opacity: 0;
+}
+
+.account_item:hover .account_options {
+  opacity: 1;
+}

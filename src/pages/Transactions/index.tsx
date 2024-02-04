@@ -12,18 +12,22 @@ const Tranc: FC<SimpleTrancProps> = () => {
     {
       title: "从账户",
       dataIndex: ["from", "name"],
+      width: 100,
     },
     {
       title: "到账户",
       dataIndex: ["to", "name"],
+      width: 100,
     },
     {
       title: "金额",
       dataIndex: "amount",
+      width: 100,
     },
     {
       title: "流水",
       dataIndex: "transacs",
+      width: 100,
     },
     {
       title: "备注",
@@ -104,7 +108,7 @@ const Tranc: FC<SimpleTrancProps> = () => {
           <MenuBar />
         </div>
       </div>
-      {/* <AutoSizer>
+      <AutoSizer>
         {({ height, width }) => {
           console.log(height, width);
           return (
@@ -132,7 +136,7 @@ const Tranc: FC<SimpleTrancProps> = () => {
             </Card>
           );
         }}
-      </AutoSizer> */}
+      </AutoSizer>
     </div>
   );
 };

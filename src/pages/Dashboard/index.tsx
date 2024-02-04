@@ -81,7 +81,7 @@ export const animals = [
 
 const Dashboard: FC<DashboardProps> = () => {
   return (
-    <div>
+    <div className="bg-white">
       <ChartBlock />
     </div>
   );
