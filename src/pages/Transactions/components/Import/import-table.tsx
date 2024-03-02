@@ -1,22 +1,24 @@
 import { AccountTreeDataDto } from "@/api/models/AccountTreeDataDto";
 import { CsvContent } from "@/lib/csv-adaper";
+import AutoSizer from "react-virtualized-auto-sizer";
 import NewAccount from "@/pages/Accounts/components/new";
 import { AccountType } from "@/pages/Accounts/const";
 import { Cascader, Select, Typography } from "@douyinfe/semi-ui";
 import { Checkbox, useDisclosure } from "@nextui-org/react";
-import { ConfigProvider, Table, message } from "antd";
+import { Table, message } from "antd";
 import { Button as SemiButton } from "@douyinfe/semi-ui";
-import React, {
+import {
   Dispatch,
   FC,
-  ReactNode,
   SetStateAction,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import { useQueryClient } from "react-query";
 import ConfirmTable from "./confirm-table";
+import { CreateTransactionDto } from "@/api/models/CreateTransactionDto";
 export interface ImportTableProps {
   csvContent?: CsvContent;
   steps: number;
@@ -24,30 +26,31 @@ export interface ImportTableProps {
   setSteps: Dispatch<SetStateAction<number>>;
 }
 export type ExpandableType = {
-  transType: string;
-  transTo: string;
-  data: any;
+  transType: string; // 原本数据的交易类型
+  transTo: string; // 原本数据的交易对方
+  data: any; // 原本数据
 };
 export type ExpandableMapType = Record<
   string,
   {
     from: string[]; // 从账户
     to: string[]; // 到账户
+    ignore: boolean; // 是否忽略该数据
     type: string; //收支 in | out
   }
 >;
 const ImportTable: FC<ImportTableProps> = ({
+  importSource,
   csvContent,
   steps,
   setSteps,
-  importSource,
 }) => {
   const { Title, Text } = Typography;
   // 用来定义下面的数据的type
   const [typeMap, setTypeMap] = useState<ExpandableMapType>({});
-  const typeMapRef = useRef<ExpandableMapType>({});
+  const typeMapRef = useRef<ExpandableMapType>({}); //一级类型,使用transtype和transto当key，映射类型
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  // 数据自己的type
+  // 数据自己的type //具体到二级数据的自己选择的类型,使用时间作为key来映射类型
   const [dataMap, setDataMap] = useState<ExpandableMapType>({});
   const queryClient = useQueryClient();
   const accountData: AccountTreeDataDto | undefined =
@@ -98,9 +101,39 @@ const ImportTable: FC<ImportTableProps> = ({
     {
       dataIndex: "index",
       width: 100,
+      title: "是否忽略",
+      render: (_, record: any, index: number) => {
+        return (
+          <Checkbox
+            onChange={(e) => {
+              setTypeMap((old) => {
+                const key = `${record.transType}-${record.transTo}`;
+                let item = old[key];
+                if (item) {
+                  item.ignore = e.target.checked;
+                } else {
+                  old[key] = {
+                    from: [],
+                    ignore: e.target.checked,
+                    to: [],
+                    type: "",
+                  };
+                }
+                return {
+                  ...old,
+                };
+              });
+            }}
+          />
+        );
+      },
+    },
+    {
+      dataIndex: "index",
+      width: 100,
       title: "行数",
       render: (_, record: any, index: number) => {
-        return index;
+        return index + 1;
       },
     },
     {
@@ -213,6 +246,9 @@ const ImportTable: FC<ImportTableProps> = ({
                   if (item?.from[0] === "assets" && item?.to[0] === "expense") {
                     inOrOut = "out";
                   }
+                  if (item?.from[0] === "assets" && item?.to[0] === "assets") {
+                    inOrOut = "transfer";
+                  }
                   // 收入
                   if (item?.from[0] === "income" && item?.to[0] === "assets") {
                     inOrOut = "in";
@@ -253,10 +289,13 @@ const ImportTable: FC<ImportTableProps> = ({
       render: (_, record: ExpandableType) => {
         const key = `${record.transType}-${record.transTo}`;
         const item = typeMap[key];
-        let inOrOut = "out";
+        let inOrOut = "invalid";
         // 消费
         if (item?.from[0] === "assets" && item?.to[0] === "expense") {
           inOrOut = "out";
+        }
+        if (item?.from[0] === "assets" && item?.to[0] === "assets") {
+          inOrOut = "transfer";
         }
         // 收入
         if (item?.from[0] === "income" && item?.to[0] === "assets") {
@@ -270,78 +309,23 @@ const ImportTable: FC<ImportTableProps> = ({
         if (item?.from[0] === "assets" && item?.to[0] === "liabilities") {
           inOrOut = "repayment";
         }
+        console.log(item);
         return (
-          <Select
-            disabled
-            onChange={(v) => {
-              setTypeMap((old) => {
-                const key = `${record.transType}-${record.transTo}`;
-                const item = old[key];
-                if (item) {
-                  item.type = v as string;
-                } else {
-                  old[key] = {
-                    to: [],
-                    from: [],
-                    type: v as string,
-                  };
-                }
-                return {
-                  ...old,
-                };
-              });
-            }}
-            style={{ width: 120 }}
-            value={inOrOut}
-          >
+          <Select disabled style={{ width: 120 }} value={inOrOut}>
             <Select.Option value="in">收入</Select.Option>
             <Select.Option value="out">支出</Select.Option>
             <Select.Option value="loan">借贷</Select.Option>
+            <Select.Option value="transfer">转账</Select.Option>
             <Select.Option value="repayment">还款</Select.Option>
+            <Select.Option value="invalid">-</Select.Option>
           </Select>
         );
       },
     },
   ];
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
   useEffect(() => {
     typeMapRef.current = typeMap;
   }, [typeMap]);
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    columnWidth: 32,
-    columnTitle: (node: ReactNode) => {
-      return (
-        <Checkbox
-          isIndeterminate={node?.props?.indeterminate}
-          onChange={node?.props?.onChange}
-          isSelected={node?.props?.checked}
-          size="md"
-          radius="md"
-        ></Checkbox>
-      );
-    },
-    renderCell: (
-      _checked: boolean,
-      _record: any,
-      _index: number,
-      node: ReactNode
-    ) => {
-      return (
-        <Checkbox
-          onChange={node?.props?.onChange}
-          onClick={node?.props?.onClick}
-          isSelected={node?.props?.checked}
-          size="md"
-          radius="md"
-        ></Checkbox>
-      );
-    },
-  };
   const slotStyle = {
     height: "36px",
     display: "flex",
@@ -480,14 +464,45 @@ const ImportTable: FC<ImportTableProps> = ({
         },
       ]
     );
-
+    columns?.unshift({
+      dataIndex: "index",
+      width: 100,
+      title: "是否忽略",
+      render: (_, record: any, index: number) => {
+        return (
+          <Checkbox
+            onChange={(e) => {
+              const keys = Object.keys(record);
+              setDataMap((old) => {
+                const key = `${record[keys[0]]}`;
+                const item = old[key];
+                const parentTypeKey = `${record.transType}-${record.transTo}`;
+                const parentType = typeMapRef.current[parentTypeKey];
+                if (item) {
+                  item.ignore = e.target.checked;
+                } else {
+                  old[key] = {
+                    from: [],
+                    ignore: parentType?.ignore,
+                    to: [],
+                    type: "",
+                  };
+                }
+                return {
+                  ...old,
+                };
+              });
+            }}
+          />
+        );
+      },
+    });
     return (
       <Table
         columns={columns}
         dataSource={record?.data}
         rowKey={"id"}
-        // rowSelection={rowSelection}
-        scroll={{ y: 200 }}
+        scroll={{ y: 200, x: 1800 }}
         pagination={false}
       />
     );
@@ -523,17 +538,26 @@ const ImportTable: FC<ImportTableProps> = ({
       return showTablData;
     }
   };
-  const expandableData = getExpandleData();
+  const expandableData = useMemo(
+    () => getExpandleData(),
+    [csvContent, dataMap, typeMap]
+  );
   const ref = useRef<any>(null);
   const isAllAccount = () => {
     let parentIndex = -1;
 
     for (let i = 0; i < (expandableData?.length ?? 0); i++) {
       const item = expandableData?.[i];
+      let invalid = false;
       const flag = item?.data.every((s: any) => {
+        if (s.type === "invalid") {
+          invalid = true;
+          message.warning(`第 ${i + 1} 条数据集有无效数据`);
+          return false;
+        }
         return s.to && s.from && s.type;
       });
-      if (!flag) {
+      if (!flag && !invalid) {
         parentIndex = i;
         break;
       }
@@ -544,6 +568,37 @@ const ImportTable: FC<ImportTableProps> = ({
     }
     return parentIndex === -1;
   };
+  const [confirmData, setConfirmData] = useState<CreateTransactionDto[]>();
+  const getConfirmData = () => {
+    switch (importSource) {
+      case "wechat":
+        const res: CreateTransactionDto[] = [];
+        expandableData?.forEach((item) => {
+          const data = item?.data.map((v: any) => {
+            const keys = Object.keys(v);
+            const transactionDate = v[keys[3]];
+            const detail = v[keys[3]];
+            const account = [v["from"], v["to"]]; // 从那个账户
+            const amount = ["amount"]; // 金额
+            const type = v["type"]; // 收支类型
+            const extra = JSON.stringify(v);
+            return {
+              transactionDate,
+              detail,
+              account,
+              amount,
+              type,
+              extra,
+            };
+          });
+          res.concat(data);
+        });
+        return res;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       <div className="mb-4 flex items-end gap-2">
@@ -552,47 +607,60 @@ const ImportTable: FC<ImportTableProps> = ({
         </Title>
         <Text type="secondary">共 {csvContent?.data?.length} 条</Text>
       </div>
-      {steps === 1 ? (
-        <>
-          <div className="mt-4 flex gap-4">
-            <Table
-              ref={ref}
-              rowKey={"transTo"}
-              scroll={{ x: 1500, y: 500 }}
-              pagination={false}
-              expandable={{ expandedRowRender, columnWidth: 50 }}
-              columns={transferColumns}
-              dataSource={expandableData}
-            />
-          </div>
-          <NewAccount onOpenChange={onOpenChange} isOpen={isOpen} />
-          <div className="mt-4 justify-center flex gap-4">
-            <SemiButton
-              onClick={() => {
-                setSteps((step) => {
-                  return step - 1;
-                });
-              }}
-              type="primary"
-            >
-              上一步
-            </SemiButton>
-            <SemiButton
-              onClick={() => {
-                const flag = isAllAccount();
-                if (flag) {
-                  setSteps(2);
-                }
-              }}
-              type="primary"
-            >
-              确认数据
-            </SemiButton>
-          </div>
-        </>
-      ) : (
-        <ConfirmTable dataSource={expandableData} />
-      )}
+      <div
+        style={{
+          height: "calc(100vh - 200px)",
+        }}
+      >
+        {steps === 1 ? (
+          <AutoSizer>
+            {({ height, width }) => {
+              return (
+                <div style={{ height, width }} className="w-full">
+                  <Table
+                    ref={ref}
+                    rowKey={"transTo"}
+                    scroll={{ x: 1000, y: height - 100 }}
+                    pagination={false}
+                    expandable={{ expandedRowRender, columnWidth: 50 }}
+                    columns={transferColumns}
+                    dataSource={expandableData}
+                  />
+                  <NewAccount onOpenChange={onOpenChange} isOpen={isOpen} />
+                  <div className="mt-4 justify-center flex gap-4">
+                    <SemiButton
+                      onClick={() => {
+                        setSteps((step) => {
+                          return step - 1;
+                        });
+                      }}
+                      type="primary"
+                    >
+                      上一步
+                    </SemiButton>
+                    <SemiButton
+                      onClick={() => {
+                        const flag = isAllAccount();
+                        if (flag) {
+                          setSteps(2);
+                        } else {
+                          const res = getConfirmData();
+                          setConfirmData(res);
+                        }
+                      }}
+                      type="primary"
+                    >
+                      确认数据
+                    </SemiButton>
+                  </div>
+                </div>
+              );
+            }}
+          </AutoSizer>
+        ) : (
+          <ConfirmTable dataSource={confirmData} />
+        )}
+      </div>
     </>
   );
 };

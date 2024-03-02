@@ -109,7 +109,6 @@ const Tranc: FC<SimpleTrancProps> = () => {
       </div>
       <AutoSizer>
         {({ height, width }) => {
-          console.log(height, width);
           return (
             <Card radius="sm" style={{ height: height - 40, width: width }}>
               <ConfigProvider

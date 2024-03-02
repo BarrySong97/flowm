@@ -4,9 +4,9 @@ export type CsvDataCategory = Record<
 >;
 
 export type CsvContent = {
-  data: Array<Record<string, any>>;
-  tableColumns: Array<Record<string, any>>;
-  transactionType: CsvDataCategory;
+  data: Array<Record<string, any>>; // 真实数据
+  tableColumns: Array<Record<string, any>>; // tablecolumn
+  transactionType: CsvDataCategory; // 原本里面的交易类型
 };
 export function wechat(content: string) {
   const lines = content.split("\n").slice(17); // 从第18行开始读取

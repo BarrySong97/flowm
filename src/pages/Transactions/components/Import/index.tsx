@@ -50,23 +50,7 @@ const ImportBtn: FC<ImportBtnProps> = () => {
             <>
               <ModalHeader>导入CSV文件</ModalHeader>
               <ModalBody>
-                <Steps
-                  type="basic"
-                  current={steps}
-                  // onChange={(i) => {
-                  //   if (i === 0) {
-                  //     // setCsvContent(undefined);
-                  //     setSteps(i);
-                  //   }
-                  //   if (i === 1 || i === 2) {
-                  //     if (csvContent) {
-                  //       setSteps(i);
-                  //     } else {
-                  //       message.warning("请先上传文件");
-                  //     }
-                  //   }
-                  // }}
-                >
+                <Steps type="basic" current={steps}>
                   <Steps.Step title="选择导入源" description="只支持.csv文件" />
                   <Steps.Step
                     title="匹配导入"

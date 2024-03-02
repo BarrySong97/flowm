@@ -3,14 +3,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AccountDto } from './AccountDto';
+import type { AccountDto } from "./AccountDto";
 
 export type TransactionDto = {
-    transactionDate: string;
-    account: Array<AccountDto>;
-    createdAt: string;
-    updatedAt: string;
-    amount: number;
-    desc?: string;
-    type: string;
+  transactionDate: string;
+  account: Array<AccountDto>;
+  detail: string;
+  extra?: string;
+  createdAt: string;
+  updatedAt: string;
+  amount: number;
+  desc?: string;
+  type: string;
 };

@@ -4,9 +4,11 @@
 /* eslint-disable */
 
 export type CreateTransactionDto = {
-    transactionDate: string;
-    account: Array<string>;
-    amount: number;
-    desc?: string;
-    type: string;
+  transactionDate: string;
+  account: Array<string>;
+  amount: number;
+  detail: string;
+  extra?: string;
+  desc?: string;
+  type: string;
 };

@@ -1,11 +1,13 @@
 import { AccountTreeDataDto } from "@/api/models/AccountTreeDataDto";
+import { CreateTransactionDto } from "@/api/models/CreateTransactionDto";
 import { AccountType } from "@/pages/Accounts/const";
+import AutoSizer from "react-virtualized-auto-sizer";
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import React, { FC } from "react";
+import { FC } from "react";
 import { useQueryClient } from "react-query";
 export interface ConfirmTableProps {
-  dataSource: any;
+  dataSource?: CreateTransactionDto[];
 }
 const ConfirmTable: FC<ConfirmTableProps> = ({ dataSource }) => {
   const queryClient = useQueryClient();
@@ -31,7 +33,7 @@ const ConfirmTable: FC<ConfirmTableProps> = ({ dataSource }) => {
   const columns: ColumnsType<any> = [
     {
       title: "交易时间",
-      dataIndex: "transTime",
+      dataIndex: "transactionDate",
     },
     {
       title: "从账户",
@@ -45,6 +47,13 @@ const ConfirmTable: FC<ConfirmTableProps> = ({ dataSource }) => {
       dataIndex: ["to", "name"],
       render: (_, record) => {
         return getAccountName(record.to);
+      },
+    },
+    {
+      title: "内容",
+      dataIndex: "detail",
+      render: (_, record) => {
+        return getAccountName(record.from);
       },
     },
     {
@@ -64,15 +73,20 @@ const ConfirmTable: FC<ConfirmTableProps> = ({ dataSource }) => {
       dataIndex: "desc",
     },
   ];
-  const convertData = () => {};
   return (
-    <Table
-      rowKey={"transTo"}
-      scroll={{ x: 1500, y: 500 }}
-      pagination={false}
-      columns={columns}
-      dataSource={dataSource}
-    />
+    <AutoSizer>
+      {({ height, width }) => (
+        <div style={{ height, width }}>
+          <Table
+            rowKey={"transactionDate"}
+            scroll={{ x: 1200, y: height }}
+            pagination={false}
+            columns={columns}
+            dataSource={dataSource}
+          />
+        </div>
+      )}
+    </AutoSizer>
   );
 };
 

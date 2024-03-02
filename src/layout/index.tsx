@@ -22,14 +22,16 @@ const AppLayout = () => {
     <ErrorBoundary fallback={<div>error</div>}>
       <NextUIProvider navigate={navigate}>
         <Layout style={{ height: "100vh" }}>
-          <Sider
-            // collapsible
-            className="border-divider border-r"
-            width={260}
-            theme="light"
-          >
-            <SideBar />
-          </Sider>
+          <div className="h-full overflow-auto bg-white">
+            <Sider
+              // collapsible
+              className="border-divider border-r h-full"
+              width={260}
+              theme="light"
+            >
+              <SideBar />
+            </Sider>
+          </div>
           <Layout style={{ height: "100vh", backgroundColor: "#FBFBFC" }}>
             <Content className="h-screen">
               <AppNavbar />
