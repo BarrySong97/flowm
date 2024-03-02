@@ -22,7 +22,12 @@ const AppLayout = () => {
     <ErrorBoundary fallback={<div>error</div>}>
       <NextUIProvider navigate={navigate}>
         <Layout style={{ height: "100vh" }}>
-          <Sider className="border-divider border-r" width={260} theme="light">
+          <Sider
+            // collapsible
+            className="border-divider border-r"
+            width={260}
+            theme="light"
+          >
             <SideBar />
           </Sider>
           <Layout style={{ height: "100vh", backgroundColor: "#FBFBFC" }}>

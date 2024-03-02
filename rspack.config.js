@@ -29,7 +29,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       "/api/": {
-        target: process.env.PROXY_TARGET || "http://115.238.186.108:3000",
+        target: "http://localhost:3000",
         changeOrigin: true,
         secure: false,
         pathRewrite: { "^/api": "" },

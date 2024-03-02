@@ -6,7 +6,7 @@
     "dev": "cross-env NODE_ENV=development rspack serve",
     "build": "cross-env NODE_ENV=production rspack build",
     "clean": "rimraf dist",
-    "api": "openapi --input http://localhost:3100/api-json  --useOptions true --output ./temp/api --exportCore false --client axios"
+    "api": "openapi --input http://localhost:3000/api-json  --useOptions true --output ./temp/api --exportCore true --client axios"
   },
   "dependencies": {
     "@ant-design/charts": "2.0.0",

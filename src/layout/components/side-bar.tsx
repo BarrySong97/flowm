@@ -11,12 +11,14 @@ import {
   MaterialSymbolsDashboard,
   PhPlusMinusFill,
   RiMoneyCnyCircleFill,
+  SolarAddFolderBold,
   SolarChatRoundMoneyBold,
   SolarDollarBold,
   SolarLayersBoldDuotone,
   SolarReciveSquareBold,
   SolarSendSquareBold,
   SolarSortBold,
+  SolarSquareTransferHorizontalBold,
   UilTransaction,
 } from "@/assets/icons";
 import { Button, Menu, MenuProps } from "antd";
@@ -31,6 +33,9 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { cn } from "@/lib/utils";
+import { useQuery } from "react-query";
+import { AccountTreeDataDto } from "@/api/models/AccountTreeDataDto";
+import { AccountsService } from "@/api/services/AccountsService";
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
@@ -49,7 +54,7 @@ const SideBar: React.FC = () => {
     value?: string
   ) => {
     return (
-      <div className="flex py-2 pr-1 justify-between items-center account_item">
+      <div className="flex py-2 pr-4 justify-between items-center account_item">
         <div className="flex gap-2 items-center">
           <div className="text-lg" style={{ color }}>
             {icon}
@@ -60,7 +65,7 @@ const SideBar: React.FC = () => {
         </div>
         <div className="flex items-center &:hover:text-red-500">
           {showOptions ? <div style={{ color }}>2000</div> : null}
-          {showOptions ? (
+          {/* {showOptions ? (
             <Dropdown
               onOpenChange={(value) => {
                 if (!value) {
@@ -115,11 +120,20 @@ const SideBar: React.FC = () => {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     );
   };
+
+  const { data: accountdata, isLoading } = useQuery<AccountTreeDataDto, Error>(
+    ["accountTreeData"],
+    () => AccountsService.accountsControllerGetTreeData(),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
   const treeData = [
     {
       label: "仪表盘",
@@ -131,6 +145,24 @@ const SideBar: React.FC = () => {
       color: "#006FEE",
     },
     {
+      label: "流水",
+      value: "transactions",
+      key: "-2",
+      labelIcon: <SolarSquareTransferHorizontalBold />,
+      className: "rounded-md",
+      level: -1,
+      color: "#7828C8",
+    },
+    {
+      label: "账户管理",
+      value: "accounts",
+      key: "-3",
+      labelIcon: <SolarAddFolderBold />,
+      className: "rounded-md",
+      level: -1,
+      color: "#71717A",
+    },
+    {
       label: "资产",
       value: "assets",
       labelIcon: <SolarChatRoundMoneyBold />,
@@ -139,12 +171,12 @@ const SideBar: React.FC = () => {
       level: 0,
       color: "#17C964",
       children: [
-        {
-          label: "微信",
+        ...(accountdata?.assets.map((item) => ({
+          label: item.title,
           color: "#17C964",
-          value: "wechat",
-          key: "0-1",
-        },
+          value: item.title,
+          key: item.id,
+        })) ?? []),
       ],
     },
     {
@@ -154,6 +186,14 @@ const SideBar: React.FC = () => {
       color: "#F5A524",
       level: 0,
       key: "1",
+      children: [
+        ...(accountdata?.income.map((item) => ({
+          label: item.title,
+          color: "#F5A524",
+          value: item.title,
+          key: item.id,
+        })) ?? []),
+      ],
     },
     {
       label: "消费",
@@ -162,6 +202,14 @@ const SideBar: React.FC = () => {
       color: "#71717A",
       level: 0,
       key: "2",
+      children: [
+        ...(accountdata?.expense.map((item) => ({
+          label: item.title,
+          color: "#71717A",
+          value: item.title,
+          key: item.id,
+        })) ?? []),
+      ],
     },
     {
       label: "负债",
@@ -170,15 +218,54 @@ const SideBar: React.FC = () => {
       labelIcon: <SolarSortBold />,
       color: "#F31260",
       key: "3",
+      children: [
+        ...(accountdata?.liabilities.map((item) => ({
+          label: item.title,
+          color: "#F31260",
+          value: item.title,
+          key: item.id,
+        })) ?? []),
+      ],
     },
   ];
   return (
-    <div className="py-4 px-2">
-      <div className="font-bold text-xl">Flow-M</div>
+    <>
+      {/* <Menu
+        theme="light"
+        defaultSelectedKeys={["1"]}
+        mode="inline"
+        style={{ height: "100%", borderRight: 0 }}
+        items={treeData.map((v) => ({
+          label: v.label,
+          key: v.key,
+          icon: (
+            <span
+              style={{
+                color: v.color,
+              }}
+            >
+              {v.labelIcon}
+            </span>
+          ),
+        }))}
+      /> */}
+
       <Tree
         defaultValue={selectKey}
         onChange={(value) => {
           setSelectKey(value as string);
+          if (
+            ["dashboard", "transactions", "accounts"].includes(value as string)
+          ) {
+            switch (value) {
+              case "dashboard":
+                navigate("/");
+                break;
+              default:
+                navigate("/" + value);
+                break;
+            }
+          }
         }}
         renderLabel={(_, treeNodeData) => {
           return getLabel(
@@ -187,13 +274,12 @@ const SideBar: React.FC = () => {
             treeNodeData?.level === 0,
             treeNodeData?.color,
             treeNodeData?.level !== -1,
-            treeNodeData?.value
+            treeNodeData?.value as string
           );
         }}
         treeData={treeData}
-        defaultExpandAll
       />
-    </div>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { ColumnsType } from "antd/es/table";
 import { FC, ReactNode, useState } from "react";
 import MenuBar from "./components/menu-bar";
+import ImportBtn from "./components/Import";
 export interface SimpleTrancProps {}
 
 const Tranc: FC<SimpleTrancProps> = () => {
@@ -57,7 +58,6 @@ const Tranc: FC<SimpleTrancProps> = () => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -66,8 +66,6 @@ const Tranc: FC<SimpleTrancProps> = () => {
     onChange: onSelectChange,
     columnWidth: 32,
     columnTitle: (node: ReactNode) => {
-      console.log(node?.props);
-
       return (
         <Checkbox
           isIndeterminate={node?.props?.indeterminate}
@@ -105,6 +103,7 @@ const Tranc: FC<SimpleTrancProps> = () => {
       <div className="flex gap-2 mb-4 items-center">
         <h4 className="text-medium font-medium ">流水数据</h4>
         <div className="flex gap-2">
+          <ImportBtn />
           <MenuBar />
         </div>
       </div>

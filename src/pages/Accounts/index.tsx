@@ -1,56 +1,44 @@
-import {
-  MaterialSymbolsCreditCardSharp,
-  MaterialSymbolsFormatListBulleted,
-} from "@/assets/icons";
 import { Tabs, Tab } from "@nextui-org/react";
-import { Divider } from "@tremor/react";
-import CardView from "./components/catd";
-
+import CardView from "./components/card";
+import { AccountList, AccountType } from "./const";
+import { useState } from "react";
+import { useQuery } from "react-query";
+import { AccountDto } from "@/api/models/AccountDto";
+import { AccountsService } from "@/api/services/AccountsService";
 export default function Example() {
-  const cards = [
+  const [selectKey, setSelectKey] = useState<AccountType>(AccountType.ASSETS);
+  const { data, isLoading } = useQuery<AccountDto[], Error>(
+    ["account", selectKey],
+    () =>
+      AccountsService.accountsControllerFindAll({
+        type: selectKey,
+      }),
     {
-      number: 100,
-      color: "from-[#FFB457] to-[#FF705B]",
-    },
-  ];
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
   return (
     <>
-      <Tabs aria-label="Dynamic tabs" className="mb-2">
-        <Tab
-          title={
-            <div className="flex items-center space-x-2">
-              <MaterialSymbolsFormatListBulleted />
-              <span>消费</span>
-            </div>
-          }
-        >
-          <CardView data={cards} />
-        </Tab>
-        <Tab
-          title={
-            <div className="flex items-center space-x-2">
-              <MaterialSymbolsCreditCardSharp />
-              <span>收入</span>
-            </div>
-          }
-        ></Tab>
-        <Tab
-          title={
-            <div className="flex items-center space-x-2">
-              <MaterialSymbolsCreditCardSharp />
-              <span>资产</span>
-            </div>
-          }
-        ></Tab>
-        <Tab
-          title={
-            <div className="flex items-center space-x-2">
-              <MaterialSymbolsCreditCardSharp />
-              <span>负债</span>
-            </div>
-          }
-        ></Tab>
+      <Tabs
+        onSelectionChange={(value) => setSelectKey(value as AccountType)}
+        selectedKey={selectKey}
+        aria-label="Dynamic tabs"
+        className="mb-4"
+      >
+        {AccountList.map((item) => (
+          <Tab
+            key={item.key}
+            title={
+              <div className="flex items-center space-x-2">
+                <span style={{ color: item.color }}>{item.labelIcon}</span>
+                <span>{item.label}</span>
+              </div>
+            }
+          ></Tab>
+        ))}
       </Tabs>
+      <CardView type={selectKey} data={data} loading={isLoading} />
     </>
   );
 }
