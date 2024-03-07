@@ -26,6 +26,9 @@ dependencies:
   '@dnd-kit/utilities':
     specifier: ^3.2.2
     version: 3.2.2(react@18.2.0)
+  '@douyinfe/semi-illustrations':
+    specifier: ^2.53.3
+    version: 2.53.3(react@18.2.0)
   '@douyinfe/semi-ui':
     specifier: ^2.51.4
     version: 2.51.4(react-dom@18.2.0)(react@18.2.0)
@@ -990,6 +993,14 @@ packages:
 
   /@douyinfe/semi-illustrations@2.51.4(react@18.2.0):
     resolution: {integrity: sha512-vlf8wI9ulNRPU2SfRs7l7PeUPuON2sro+7BgVA/z/XIiOrR+u4GHIn+Li66/REp+z+N91Fj/61feJHCtAd4jAg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /@douyinfe/semi-illustrations@2.53.3(react@18.2.0):
+    resolution: {integrity: sha512-eE7N7roAt5RzFlcDokIqUuQbgDkUpK27KQUhaMbmgE2wbSfoLsbkC2q9IIttO79cB46LbUibrq9BLAeOX4LEBA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:

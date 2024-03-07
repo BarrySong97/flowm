@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 export type CreateAccountDto = {
-    type: string;
-    title: string;
+  type: string;
+  title: string;
+  amount?: number;
 };

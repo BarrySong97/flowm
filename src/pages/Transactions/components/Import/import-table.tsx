@@ -28,6 +28,7 @@ export interface ImportTableProps {
 export type ExpandableType = {
   transType: string; // 原本数据的交易类型
   transTo: string; // 原本数据的交易对方
+  ignore: boolean; // 是否忽略
   data: any; // 原本数据
 };
 export type ExpandableMapType = Record<
@@ -35,7 +36,7 @@ export type ExpandableMapType = Record<
   {
     from: string[]; // 从账户
     to: string[]; // 到账户
-    ignore: boolean; // 是否忽略该数据
+    ignore?: boolean; // 是否忽略该数据
     type: string; //收支 in | out
   }
 >;
@@ -49,6 +50,7 @@ const ImportTable: FC<ImportTableProps> = ({
   // 用来定义下面的数据的type
   const [typeMap, setTypeMap] = useState<ExpandableMapType>({});
   const typeMapRef = useRef<ExpandableMapType>({}); //一级类型,使用transtype和transto当key，映射类型
+  const dataMapRef = useRef<ExpandableMapType>({});
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   // 数据自己的type //具体到二级数据的自己选择的类型,使用时间作为key来映射类型
   const [dataMap, setDataMap] = useState<ExpandableMapType>({});
@@ -103,14 +105,29 @@ const ImportTable: FC<ImportTableProps> = ({
       width: 100,
       title: "是否忽略",
       render: (_, record: any, index: number) => {
+        const ignore = record.data.every((v: any) => !!v.ignore);
+        const isIndeterminate = record.data.some((v: any) => !!v.ignore);
+        if (index === 1) {
+          console.log(record.data, ignore, isIndeterminate);
+        }
         return (
           <Checkbox
+            isIndeterminate={!ignore && isIndeterminate}
+            isSelected={ignore}
             onChange={(e) => {
               setTypeMap((old) => {
                 const key = `${record.transType}-${record.transTo}`;
                 let item = old[key];
                 if (item) {
                   item.ignore = e.target.checked;
+                  record.data.forEach((v) => {
+                    const keys = Object.keys(v);
+                    const selfTypeData = dataMap[v[keys[0]]];
+                    dataMap[v[keys[0]]] = {
+                      ...selfTypeData,
+                      ignore: undefined,
+                    };
+                  });
                 } else {
                   old[key] = {
                     from: [],
@@ -147,7 +164,7 @@ const ImportTable: FC<ImportTableProps> = ({
     {
       dataIndex: "from",
       title: "从账户",
-      render: (_, record: ExpandableType) => {
+      render: (text, record: ExpandableType) => {
         return (
           <Cascader
             bottomSlot={
@@ -206,6 +223,7 @@ const ImportTable: FC<ImportTableProps> = ({
                 };
               });
             }}
+            value={text}
             treeData={treeData}
             placeholder="选择匹配账户"
           />
@@ -215,7 +233,7 @@ const ImportTable: FC<ImportTableProps> = ({
     {
       dataIndex: "to",
       title: "到账户",
-      render: (_, record: ExpandableType) => {
+      render: (text, record: ExpandableType) => {
         return (
           <Cascader
             bottomSlot={
@@ -277,6 +295,7 @@ const ImportTable: FC<ImportTableProps> = ({
                 };
               });
             }}
+            value={text}
             treeData={treeData}
             placeholder="选择匹配账户"
           />
@@ -326,6 +345,9 @@ const ImportTable: FC<ImportTableProps> = ({
   useEffect(() => {
     typeMapRef.current = typeMap;
   }, [typeMap]);
+  useEffect(() => {
+    dataMapRef.current = dataMap;
+  }, [dataMap]);
   const slotStyle = {
     height: "36px",
     display: "flex",
@@ -465,12 +487,13 @@ const ImportTable: FC<ImportTableProps> = ({
       ]
     );
     columns?.unshift({
-      dataIndex: "index",
+      dataIndex: "ignore",
       width: 100,
       title: "是否忽略",
-      render: (_, record: any, index: number) => {
+      render: (text: boolean, record: any) => {
         return (
           <Checkbox
+            isSelected={text}
             onChange={(e) => {
               const keys = Object.keys(record);
               setDataMap((old) => {
@@ -478,13 +501,14 @@ const ImportTable: FC<ImportTableProps> = ({
                 const item = old[key];
                 const parentTypeKey = `${record.transType}-${record.transTo}`;
                 const parentType = typeMapRef.current[parentTypeKey];
+
                 if (item) {
                   item.ignore = e.target.checked;
                 } else {
                   old[key] = {
-                    from: [],
-                    ignore: parentType?.ignore,
-                    to: [],
+                    from: parentType?.from,
+                    ignore: e.target.checked,
+                    to: parentType?.to,
                     type: "",
                   };
                 }
@@ -517,7 +541,7 @@ const ImportTable: FC<ImportTableProps> = ({
         transToKeys.forEach((transToKey) => {
           const data = transType[transTypeKey][transToKey];
           const key = `${transTypeKey}-${transToKey}`;
-          const item = typeMap[key];
+          const item = typeMap[key] || typeMapRef.current[key];
           data.forEach((v) => {
             const keys = Object.keys(v);
             const selfTypeData = dataMap[v[keys[0]]];
@@ -525,9 +549,17 @@ const ImportTable: FC<ImportTableProps> = ({
             v["to"] = selfTypeData?.to ? selfTypeData.to : item?.to;
             v["from"] = selfTypeData?.from ? selfTypeData.from : item?.from;
             v["type"] = item?.type ?? selfTypeData?.type;
+            v["ignore"] =
+              selfTypeData?.ignore !== undefined
+                ? selfTypeData.ignore
+                : item?.ignore;
             v["amount"] = v["金额(元)"].replace("￥", "") || v["金额"];
           });
           const res = {
+            id: key,
+            ignore: item?.ignore ?? false,
+            from: item?.from,
+            to: item?.to,
             transType: transTypeKey,
             transTo: transToKey,
             data,
@@ -542,6 +574,7 @@ const ImportTable: FC<ImportTableProps> = ({
     () => getExpandleData(),
     [csvContent, dataMap, typeMap]
   );
+
   const ref = useRef<any>(null);
   const isAllAccount = () => {
     let parentIndex = -1;
@@ -549,6 +582,9 @@ const ImportTable: FC<ImportTableProps> = ({
     for (let i = 0; i < (expandableData?.length ?? 0); i++) {
       const item = expandableData?.[i];
       let invalid = false;
+      if (item?.ignore) {
+        continue;
+      }
       const flag = item?.data.every((s: any) => {
         if (s.type === "invalid") {
           invalid = true;
@@ -576,22 +612,30 @@ const ImportTable: FC<ImportTableProps> = ({
         expandableData?.forEach((item) => {
           const data = item?.data.map((v: any) => {
             const keys = Object.keys(v);
-            const transactionDate = v[keys[3]];
-            const detail = v[keys[3]];
+            const transactionDate = v[keys[0]];
+            const detail = v[keys[2]];
             const account = [v["from"], v["to"]]; // 从那个账户
-            const amount = ["amount"]; // 金额
+            const amount = v["amount"]; // 金额
             const type = v["type"]; // 收支类型
+            const ignore = v["ignore"]; // 收支类型
+            delete v.id;
+            delete v.to;
+            delete v.from;
+            delete v.type;
+            delete v.amount;
+            delete v.ignore;
             const extra = JSON.stringify(v);
             return {
               transactionDate,
               detail,
+              ignore,
               account,
               amount,
               type,
               extra,
             };
           });
-          res.concat(data);
+          res.push(...data.filter((v: any) => !v.ignore));
         });
         return res;
       default:
@@ -619,7 +663,7 @@ const ImportTable: FC<ImportTableProps> = ({
                 <div style={{ height, width }} className="w-full">
                   <Table
                     ref={ref}
-                    rowKey={"transTo"}
+                    rowKey={"id"}
                     scroll={{ x: 1000, y: height - 100 }}
                     pagination={false}
                     expandable={{ expandedRowRender, columnWidth: 50 }}
@@ -643,7 +687,6 @@ const ImportTable: FC<ImportTableProps> = ({
                         const flag = isAllAccount();
                         if (flag) {
                           setSteps(2);
-                        } else {
                           const res = getConfirmData();
                           setConfirmData(res);
                         }
@@ -658,7 +701,13 @@ const ImportTable: FC<ImportTableProps> = ({
             }}
           </AutoSizer>
         ) : (
-          <ConfirmTable dataSource={confirmData} />
+          <>
+            <ConfirmTable
+              importSource={importSource}
+              setSteps={setSteps}
+              dataSource={confirmData}
+            />
+          </>
         )}
       </div>
     </>

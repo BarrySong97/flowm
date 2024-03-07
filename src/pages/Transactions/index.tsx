@@ -1,60 +1,171 @@
-import { Card, Checkbox } from "@nextui-org/react";
-import { ConfigProvider, Table } from "antd";
-import AutoSizer from "react-virtualized-auto-sizer";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@nextui-org/react";
+import { ConfigProvider, Table, Tag } from "antd";
 
 import { ColumnsType } from "antd/es/table";
 import { FC, ReactNode, useState } from "react";
 import MenuBar from "./components/menu-bar";
 import ImportBtn from "./components/Import";
+import { useQuery } from "react-query";
+import { TransactionDto } from "@/api/models/TransactionDto";
+import { SolarDocumentTextBold } from "@/assets/icons";
+import { Descriptions } from "@douyinfe/semi-ui";
+import { TransactionsService } from "@/api/services/TransactionsService";
+import { TransactionType } from "@/constant";
+import dayjs from "dayjs";
 export interface SimpleTrancProps {}
 
 const Tranc: FC<SimpleTrancProps> = () => {
-  const columns: ColumnsType<any> = [
+  const { data, isLoading } = useQuery<TransactionDto[], Error>(
+    ["transactions"],
+    () => TransactionsService.transactionControllerFindAll(),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const getType = (v: string) => {
+    switch (v) {
+      case TransactionType.IN:
+        return (
+          <Tag bordered={false} className="bg-green-500 text-white">
+            收入
+          </Tag>
+        );
+      case TransactionType.OUT:
+        return (
+          <Tag bordered={false} className="bg-warning text-white">
+            支出
+          </Tag>
+        );
+      case TransactionType.LOAN:
+        return (
+          <Tag bordered={false} className="bg-danger text-white">
+            贷款
+          </Tag>
+        );
+      case TransactionType.REPAYMENT:
+        return <Tag bordered={false}>还款</Tag>;
+      case TransactionType.TRANSFER:
+        return <Tag bordered={false}>转账</Tag>;
+    }
+  };
+  const columns: ColumnsType<TransactionDto> = [
+    {
+      title: "交易时间",
+      dataIndex: "transactionDate",
+      width: 150,
+      render(_, record) {
+        return dayjs(record.transactionDate).format("YYYY-MM-DD HH:mm");
+      },
+    },
     {
       title: "从账户",
-      dataIndex: ["from", "name"],
+      dataIndex: ["from", "title"],
       width: 100,
+      render(text) {
+        return <Tag bordered={false}>{text}</Tag>;
+      },
     },
     {
       title: "到账户",
-      dataIndex: ["to", "name"],
+      dataIndex: ["to", "title"],
       width: 100,
+      render(text) {
+        return <Tag bordered={false}>{text}</Tag>;
+      },
+    },
+    {
+      title: "内容",
+      dataIndex: "detail",
+      render(text) {
+        return text ?? "-";
+      },
     },
     {
       title: "金额",
       dataIndex: "amount",
-      width: 100,
+      render(_, record) {
+        switch (record.type) {
+          case TransactionType.IN:
+            return `+¥${record.amount}`;
+          case TransactionType.OUT:
+            return `-¥${record.amount}`;
+          case TransactionType.LOAN:
+            return `¥${record.amount}`;
+          case TransactionType.REPAYMENT:
+            return `-¥${record.amount}`;
+          case TransactionType.TRANSFER:
+            return `¥${record.amount}`;
+        }
+      },
     },
     {
-      title: "流水",
-      dataIndex: "transacs",
-      width: 100,
+      title: "收支",
+      dataIndex: "type",
+      render: (_, record) => {
+        return getType(record.type);
+      },
+    },
+    {
+      title: "补充信息",
+      dataIndex: "extra",
+      render(text) {
+        const data = JSON.parse(text);
+        const keys = Object.keys(data);
+        const obj = keys.reduce((acc, key) => {
+          acc.push({ key: key, value: data[key] });
+          return acc;
+        }, [] as any);
+        return (
+          <Popover placement="bottom-end">
+            <PopoverTrigger>
+              <Button isIconOnly size="sm" radius="sm" variant="light">
+                <SolarDocumentTextBold className="text-large text-default-500" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="px-1 py-2">
+                <div className="text-small font-bold mb-2">补充信息</div>
+                <Descriptions data={obj} />
+              </div>
+            </PopoverContent>
+          </Popover>
+        );
+      },
     },
     {
       title: "备注",
       align: "center",
       dataIndex: "desc",
+      render(text) {
+        return text ?? "-";
+      },
     },
     {
-      title: "操作",
-      dataIndex: "options",
+      title: "创建时间",
+      width: 150,
+      dataIndex: "createdAt",
+      render(_, record) {
+        return dayjs(record.createdAt).format("YYYY-MM-DD HH:mm");
+      },
+    },
+    {
+      title: "更新时间",
+      width: 150,
+      dataIndex: "updatedAt",
+      render(_, record) {
+        return dayjs(record.updatedAt).format("YYYY-MM-DD HH:mm");
+      },
     },
   ];
-
-  const data = new Array(10000).fill(null).map((_, index) => ({
-    transacs: "支出",
-    id: index + "",
-    amount: 100,
-    from: {
-      name: "微信",
-      id: "123",
-    },
-    to: {
-      name: "支付宝",
-      id: "123",
-    },
-    desc: "-",
-  }));
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -107,34 +218,26 @@ const Tranc: FC<SimpleTrancProps> = () => {
           <MenuBar />
         </div>
       </div>
-      <AutoSizer>
-        {({ height, width }) => {
-          return (
-            <Card radius="sm" style={{ height: height - 40, width: width }}>
-              <ConfigProvider
-                theme={{
-                  components: {
-                    Table: {
-                      headerBg:
-                        "hsl(var(--nextui-default-100)/var(--nextui-default-100-opacity,var(--tw-bg-opacity)))",
-                    },
-                  },
-                }}
-              >
-                <Table
-                  rowSelection={rowSelection}
-                  virtual
-                  rowKey={"id"}
-                  scroll={{ x: width, y: height }}
-                  pagination={false}
-                  columns={columns}
-                  dataSource={data}
-                />
-              </ConfigProvider>
-            </Card>
-          );
-        }}
-      </AutoSizer>
+      <Card radius="sm">
+        <ConfigProvider
+          theme={{
+            components: {
+              Table: {
+                headerBg:
+                  "hsl(var(--nextui-default-100)/var(--nextui-default-100-opacity,var(--tw-bg-opacity)))",
+              },
+            },
+          }}
+        >
+          <Table
+            rowSelection={rowSelection}
+            rowKey={"id"}
+            pagination={false}
+            columns={columns}
+            dataSource={data}
+          />
+        </ConfigProvider>
+      </Card>
     </div>
   );
 };

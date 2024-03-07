@@ -1,19 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import {
-  AddNoteIcon,
-  ArcticonsDebtcalc,
-  DeleteDocumentIcon,
-  EditDocumentIcon,
-  IcRoundCategory,
-  IconParkOutlineExpenses,
-  IconParkOutlineIncome,
-  MaterialSymbolsCreditCard,
-  MaterialSymbolsDashboard,
-  PhPlusMinusFill,
-  RiMoneyCnyCircleFill,
   SolarAddFolderBold,
   SolarChatRoundMoneyBold,
-  SolarDollarBold,
   SolarLayersBoldDuotone,
   SolarReciveSquareBold,
   SolarSendSquareBold,
@@ -21,18 +9,9 @@ import {
   SolarSquareTransferHorizontalBold,
   UilTransaction,
 } from "@/assets/icons";
-import { Button, Menu, MenuProps } from "antd";
 import { Tree } from "@douyinfe/semi-ui";
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
-import { cn } from "@/lib/utils";
 import { useQuery } from "react-query";
 import { AccountTreeDataDto } from "@/api/models/AccountTreeDataDto";
 import { AccountsService } from "@/api/services/AccountsService";
@@ -49,6 +28,7 @@ const SideBar: React.FC = () => {
     label: string,
     icon: ReactNode,
     isFirstLevel: boolean,
+    amount: number,
     color?: string,
     showOptions?: boolean,
     value?: string
@@ -64,7 +44,7 @@ const SideBar: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center &:hover:text-red-500">
-          {showOptions ? <div style={{ color }}>2000</div> : null}
+          {showOptions ? <div style={{ color }}>{amount}</div> : null}
           {/* {showOptions ? (
             <Dropdown
               onOpenChange={(value) => {
@@ -168,6 +148,7 @@ const SideBar: React.FC = () => {
       labelIcon: <SolarChatRoundMoneyBold />,
       key: "0",
       className: "rounded-md",
+      amount: accountdata?.assets.reduce((a, b) => a + b.amount, 0),
       level: 0,
       color: "#17C964",
       children: [
@@ -175,6 +156,7 @@ const SideBar: React.FC = () => {
           label: item.title,
           color: "#17C964",
           value: item.title,
+          amount: item.amount,
           key: item.id,
         })) ?? []),
       ],
@@ -182,6 +164,7 @@ const SideBar: React.FC = () => {
     {
       label: "收入",
       value: "income",
+      amount: accountdata?.income.reduce((a, b) => a + b.amount, 0),
       labelIcon: <SolarReciveSquareBold />,
       color: "#F5A524",
       level: 0,
@@ -191,6 +174,7 @@ const SideBar: React.FC = () => {
           label: item.title,
           color: "#F5A524",
           value: item.title,
+          amount: item.amount,
           key: item.id,
         })) ?? []),
       ],
@@ -201,6 +185,7 @@ const SideBar: React.FC = () => {
       labelIcon: <SolarSendSquareBold />,
       color: "#71717A",
       level: 0,
+      amount: accountdata?.expense.reduce((a, b) => a + b.amount, 0),
       key: "2",
       children: [
         ...(accountdata?.expense.map((item) => ({
@@ -208,6 +193,7 @@ const SideBar: React.FC = () => {
           color: "#71717A",
           value: item.title,
           key: item.id,
+          amount: item.amount,
         })) ?? []),
       ],
     },
@@ -218,10 +204,12 @@ const SideBar: React.FC = () => {
       labelIcon: <SolarSortBold />,
       color: "#F31260",
       key: "3",
+      amount: accountdata?.liabilities.reduce((a, b) => a + b.amount, 0),
       children: [
         ...(accountdata?.liabilities.map((item) => ({
           label: item.title,
           color: "#F31260",
+          amount: item.amount,
           value: item.title,
           key: item.id,
         })) ?? []),
@@ -272,6 +260,7 @@ const SideBar: React.FC = () => {
             (treeNodeData?.label as string) ?? "",
             treeNodeData?.labelIcon ?? null,
             treeNodeData?.level === 0,
+            treeNodeData?.amount,
             treeNodeData?.color,
             treeNodeData?.level !== -1,
             treeNodeData?.value as string
